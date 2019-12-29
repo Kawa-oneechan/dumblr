@@ -1,0 +1,30 @@
+{{include('top')/}}
+
+{{include('postnewtoolbar')/}}
+
+<div id="posts">
+
+{{if(options.posts.length==0)}}
+<div class="post message">No posts. Follow someone, maybe?</div>
+{{/if}}
+
+{{postloop(options) /}}
+
+</div>
+
+<div id="shadow"></div>
+
+<div id="new-text-post" class="modal-dialog">
+	<form action="/" method="post">
+		<input type="text" name="title" class="form-post-header" placeholder="Title"><br>
+		<textarea name="body-text" class="form-post-content"></textarea>
+		<input type="text" name="tags" class="form-post-tags"><br>
+		<input type="hidden" name="post-type" value="text">
+		<input onclick="submitAndPush(this.parentNode); closeModal('new-text-post'); return false;" type="submit" value="Submit">
+		<button onclick="closeModal('new-text-post'); return false;">Cancel</button>
+	</form>
+</div>
+
+<script src="/javascripts/dialogs.js"></script>
+
+{{include('bottom')/}}

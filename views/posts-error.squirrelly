@@ -1,0 +1,3 @@
+{{include('top')/}}
+<div class="post message">{{message}}</div>
+{{include('bottom')/}}

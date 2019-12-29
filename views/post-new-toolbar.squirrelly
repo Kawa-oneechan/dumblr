@@ -1,0 +1,3 @@
+<div id="new-post-toolbar" class="post new-post-toolbar padded">
+	<a href="#" onclick="openNewPost('text'); return false;">text</a>
+</div>

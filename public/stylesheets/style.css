@@ -1,0 +1,177 @@
+:root {
+	--background: #10171e;
+	--postback: #dbe3ea;
+	--postfore: #2c3944;
+	--messageback: #375069;
+	--messagefore: #dbe3ea;
+	--formback: #fbfbfb;
+	--formfore: #2c3944;
+	--formfield: #e4e6e8;
+	--formfieldhot: #b8c0c7;
+	--postwidth: 640px;
+	--radius: 0.25em;
+	--shadow: 0.25em 0.25em 0.5em #00000080;
+}
+
+body {
+	background: var(--background);
+	font-family: "Tahoma", "Arial", sans-serif;
+	font-size: 11pt;
+}
+
+div.post {
+	background: var(--postback);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	color: var(--postfore);
+	width: var(--postwidth);
+	margin: 1em 0.5em;
+	margin-left: calc(5% + (0.5em + 64px));
+	padding: 1em 0;
+}
+
+div.post .padded, div.post p {
+	padding: 0 1em;
+}
+
+div.message {
+	background: var(--messageback);
+	border-radius: var(--radius);
+	color: var(--messagefore);
+	text-align: center;
+}
+
+div.post a {
+	text-decoration: none;
+}
+
+div.post hr {
+	border: none;
+	border-top: 1px solid var(--messageback);
+}
+
+div.post img {
+	max-width: 100%;
+}
+
+.photo-single {
+	max-width: initial;
+	padding: 1em 0;
+	width: 100%;
+}
+
+.avatar {
+	vertical-align: middle;
+}
+
+.ava-side {
+	width: 64px;
+	height: 64px;
+	position: absolute;
+	left: calc(5% - 0.5em);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+}
+
+.ava-24 {
+	width: 24px;
+	height: 24px;
+}
+
+.ava-32 {
+	width: 32px;
+	height: 32px;
+}
+
+.ava-64 {
+	width: 64px;
+	height: 64px;
+}
+
+.ava-128 {
+	width: 128px;
+	height: 128px;
+}
+
+.ava-150 {
+	width: 150px;
+	height: 150px;
+}
+
+a.reblog {
+	margin-left: -14px;
+}
+
+.reblog::before {
+	background-image: url('/images/reblog.png');
+	content: ' ';
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background-size: contain;
+	position: relative;
+	top: 18px;
+	left: 38px;
+}
+
+h3 {
+	margin-top: 0;
+	margin-bottom: 0.25em;
+}
+
+#shadow {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: #00000020;
+	display: none;
+}
+
+.modal-dialog {
+	background: var(--formback);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	color: var(--formfore);
+	padding: 1em;
+	width: 640px;
+	height: 70%;
+	position: absolute;
+	left: calc(50% - 320px);
+	top: 2em;
+	display: none;
+}
+
+.modal-dialog form {
+	height: 100%;
+}
+
+.modal-dialog input[type='text'], .modal-dialog textarea {
+	background: none;
+	color: var(--formfore);
+	border: 1px solid var(--formfield);
+}
+
+.modal-dialog input[type='text']:focus, .modal-dialog textarea:focus {
+	border: 1px solid var(--formfieldhot);
+	outline: none;
+}
+
+.form-post-header {
+	border: none;
+	width: calc(100% - 0.5em);
+	padding: 0.25em;
+	font-size: 200%;
+}
+
+.form-post-content {
+	border: none;
+	width: calc(100% - 0.5em);
+	height: calc(100% - 7em);
+	font-size: 100%;
+	margin: 0;
+	margin-top: 0.25em;
+	padding: 0.25em;
+	resize: none;
+}
