@@ -127,7 +127,7 @@ app.route('/')
 								if (error) throw error;
 								app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.user=follows.target LEFT JOIN users ON users.id=posts.user WHERE posts.id = ?", [timestamp], function (error, results, fields) {
 									if (error) throw error;
-									res.render('new-post', { posts: results });
+									res.render('post-loop', { posts: results });
 								});
 							});
 						}
