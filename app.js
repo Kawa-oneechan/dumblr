@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var Sqrl = require('squirrelly');
 var mysql = require('mysql');
+var multer  = require('multer');
+var upload = multer({ dest: 'uploads/' });
 const marked = require('marked');
 const crypto = require('crypto');
 const secret = 'You thought it was a salt, but it was me, Dio!';
@@ -98,41 +100,35 @@ app.route('/')
 			res.render('login', { message: 'Log in to see the Dumblr Tashboard.' });
 		}
 	})
-	.post(function(req, res, next) {
+	.post(upload.any(), function(req, res, next) {
 		console.log("POST /");
-		console.log(req.body);
 		if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
 			app.locals.connection.query("SELECT id FROM users WHERE id=? AND `password-hash`=?", [req.cookies['dumblr_id'], req.cookies['dumblr_password']], function (error, results, fields) {
 
 				if (results.length) {
 					var my_id = results[0]['id'];
-					if (req.body['type'] == 'json')
+
+					if (req.body['post-type'] == 'text')
 					{
-						var payload = JSON.parse(decodeURIComponent(req.body['data']));
-						console.log(payload);
-
-						if (payload['post-type'] == 'text')
-						{
-							var timestamp = Date.time()
-							app.locals.connection.query("INSERT INTO posts SET ?", {
-								'id': timestamp,
-								'user': my_id,
-								'type': 'text',
-								'body-text': payload['body-text'],
-								'title': payload['title'],
-								'slug': sluggify(payload['body-text'], 64),
-								'tags': '',
-								'timestamp': timestamp
-							}, function(error, results, fields) {
+						var timestamp = Date.time()
+						app.locals.connection.query("INSERT INTO posts SET ?", {
+							'id': timestamp,
+							'user': my_id,
+							'type': 'text',
+							'body-text': req.body['body-text'],
+							'title': req.body['title'],
+							'slug': sluggify(req.body['body-text'], 64),
+							'tags': '',
+							'timestamp': timestamp
+						}, function(error, results, fields) {
+							if (error) throw error;
+							app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.user=follows.target LEFT JOIN users ON users.id=posts.user WHERE posts.id = ?", [timestamp], function (error, results, fields) {
 								if (error) throw error;
-								app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.user=follows.target LEFT JOIN users ON users.id=posts.user WHERE posts.id = ?", [timestamp], function (error, results, fields) {
-									if (error) throw error;
-									res.render('post-loop', { posts: results });
-								});
+								res.render('post-loop', { posts: results });
 							});
-						}
-
+						});
 					}
+
 				}
 				else {
 					res.render('login', { message: 'Invalid login state.' });

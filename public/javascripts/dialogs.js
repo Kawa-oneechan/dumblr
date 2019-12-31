@@ -19,7 +19,6 @@ function closeModal(id) {
 function submitX(f, okay) {
     xhr = new XMLHttpRequest();
 	xhr.open(f.method, f.action);
-	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	xhr.onload = function() {
 		if (xhr.status === 200) {
 			okay(xhr);
@@ -29,14 +28,13 @@ function submitX(f, okay) {
 		}
 	};
 
-	let jsonData = {};
+	let fd = new FormData();
 	for (var i = 0; i < f.elements.length; i++) {
 		if (f.elements[i].name)
-			jsonData[f.elements[i].name] = f.elements[i].value;
+			fd.append(f.elements[i].name, f.elements[i].value);
 	}
-	let payload = 'type=json&data=' + encodeURIComponent(JSON.stringify(jsonData));
 
-	xhr.send(encodeURI(payload));
+	xhr.send(fd);
 }
 
 function submitAndPush(f) {
