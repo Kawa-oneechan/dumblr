@@ -17,7 +17,7 @@ function closeModal(id) {
 }
 
 function submitX(f, okay) {
-    xhr = new XMLHttpRequest();
+	xhr = new XMLHttpRequest();
 	xhr.open(f.method, f.action);
 	xhr.onload = function() {
 		if (xhr.status === 200) {

@@ -1,12 +1,13 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var Sqrl = require('squirrelly');
-var mysql = require('mysql');
-var multer  = require('multer');
-var upload = multer({ dest: 'uploads/' });
+const createError = require('http-errors');
+const express = require('express');
+const helmet = require('helmet');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const Sqrl = require('squirrelly');
+const mysql = require('mysql');
+const multer  = require('multer');
+const upload = multer({ dest: 'uploads/' });
 const marked = require('marked');
 const crypto = require('crypto');
 const secret = 'You thought it was a salt, but it was me, Dio!';
@@ -15,6 +16,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+app.use(helmet());
 
 app.locals.connection = mysql.createConnection({
 	host: 'localhost',
