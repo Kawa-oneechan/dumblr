@@ -102,6 +102,20 @@ a.reblog {
 	margin-left: -14px;
 }
 
+div.ava-side-tail::before {
+	content: ' ';
+	width: 0;
+	height: 0;
+	display: block;
+	background-size: contain;
+	position: absolute;
+	left: calc(5% + 64px - 6px);
+	border-color: transparent;
+	border-width: 10px;
+	border-style: solid;
+	border-right-color: var(--postback);
+}
+
 .reblog::before {
 	background-image: url('/images/reblog.png');
 	content: ' ';

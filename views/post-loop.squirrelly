@@ -1,5 +1,5 @@
 {{foreach(options.posts)}}
-<div class="post {{@this.type}}">
+<div class="post {{@this.type}} ava-side-tail">
 <a href="{{@this.handle}}"><img src="profiles/{{@this.user}}-64.png" class="avatar ava-side"></a>
 {{if(@this['reblog-data'])}}
 	{{js(@this['reblog-data'] = JSON.parse(@this['reblog-data'])) /}}
