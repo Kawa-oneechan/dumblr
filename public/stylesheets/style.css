@@ -109,7 +109,7 @@ div.ava-side-tail::before {
 	display: block;
 	background-size: contain;
 	position: absolute;
-	left: calc(5% + 64px - 6px);
+	left: calc(5% + 64px - 4px);
 	border-color: transparent;
 	border-width: 10px;
 	border-style: solid;
