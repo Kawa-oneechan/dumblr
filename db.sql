@@ -1,6 +1,5 @@
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
+﻿SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -8,40 +7,36 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 
-
-
 CREATE TABLE IF NOT EXISTS `follows` (
   `follower` int(11) NOT NULL,
   `target` int(11) NOT NULL,
   KEY `follower` (`follower`,`target`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-
+TRUNCATE TABLE `follows`;
 INSERT INTO `follows` (`follower`, `target`) VALUES
 (1577465424, 1577465377);
 
-
-
 CREATE TABLE IF NOT EXISTS `posts` (
   `id` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
-  `type` enum('text','answer','photo') COLLATE utf8_bin NOT NULL DEFAULT 'text',
-  `body-text` text COLLATE utf8_bin NOT NULL,
-  `title` text COLLATE utf8_bin NOT NULL,
-  `photos` text COLLATE utf8_bin NOT NULL,
-  `question` text COLLATE utf8_bin NOT NULL,
-  `reblog-data` text COLLATE utf8_bin NOT NULL,
+  `user-id` int(11) NOT NULL,
+  `post-type` enum('text','answer','photo') NOT NULL DEFAULT 'text',
+  `body-text` text NOT NULL,
+  `title` text NOT NULL,
+  `photos` text NOT NULL,
+  `question` text NOT NULL,
+  `reblog-data` text NOT NULL,
   `reblog-count` int(11) NOT NULL DEFAULT '0',
-  `slug` varchar(256) COLLATE utf8_bin NOT NULL,
-  `tags` text COLLATE utf8_bin NOT NULL,
+  `slug` varchar(256) NOT NULL,
+  `tags` text NOT NULL,
   `nsfw` tinyint(1) NOT NULL DEFAULT '0',
   `flagged` tinyint(1) NOT NULL DEFAULT '0',
-  `timestamp` int(11) NOT NULL,
+  `posted-on` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
-
-INSERT INTO `posts` (`id`, `user`, `type`, `body-text`, `title`, `photos`, `question`, `reblog-data`, `reblog-count`, `slug`, `tags`, `nsfw`, `flagged`, `timestamp`) VALUES
+TRUNCATE TABLE `posts`;
+INSERT INTO `posts` (`id`, `user-id`, `post-type`, `body-text`, `title`, `photos`, `question`, `reblog-data`, `reblog-count`, `slug`, `tags`, `nsfw`, `flagged`, `posted-on`) VALUES
 (1577465452, 1577465377, 'text', 'This is a test post.', 'Welcome to Dumblr, motherfuckers.', '', '', '', 0, 'welcome-to-dumblr-motherfuckers', '["testing","ichi ni san"]', 0, 0, 1577465452),
 (1577465458, 1577465424, 'text', 'what is dthsi?', '', '', '', '', 0, 'what-isdthsi', '', 0, 0, 1577465458),
 (1577465460, 1577465377, 'text', 'also I have officially no idea what I''m doing, it''s past midnight and I am the tired.', 'Welcome to Dumblr, motherfuckers.', '', '', '[{"id":1577465377,"name":"kawa-oneechan?","pic":"https://www.gravatar.com/avatar/d0bd59922f5096b2c559f2b3a5d6ded9?s=32","content":"This is a test post."}]', 1, '', '["I am the table"]', 0, 0, 1577465460),
@@ -51,18 +46,19 @@ INSERT INTO `posts` (`id`, `user`, `type`, `body-text`, `title`, `photos`, `ques
 (1577562638, 1577465424, 'text', 'Lorem ipsum dolor kiss my ass', 'Posting a new post~', '', '', '', 0, 'lorem-ipsum-dolor-kiss-my-ass', '', 0, 0, 1577562638),
 (1577481040, 1577465377, 'text', 'We keep testing until productivity improves! ⬡', '⬡ Further testing ⬡', '', '', '', 0, 'we-keep-testing-until-productivity-improves-', '', 0, 0, 1577481040);
 
-
-
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
-  `handle` varchar(256) COLLATE utf8_bin NOT NULL,
-  `title` varchar(512) COLLATE utf8_bin NOT NULL,
-  `password-hash` varchar(256) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `handle` (`handle`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  `handle` varchar(256) NOT NULL,
+  `title` varchar(512) NOT NULL,
+  `password-hash` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-
+TRUNCATE TABLE `users`;
 INSERT INTO `users` (`id`, `handle`, `title`, `password-hash`) VALUES
 (1577465377, 'kawa-oneechan', '/* Logo Pending */', '2685e7f6724dad2eb0a8386e18dd3b0cb9d42b4aa92ee4e69197e543fac6e9af'),
 (1577465424, 'roxy-lalonde', 'rogue of vodka', '41ed2d68ec488b14803340cf572ded1ce23dcb51ddd1d32c208fdd125f1f5559');
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

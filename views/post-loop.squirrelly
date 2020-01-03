@@ -1,13 +1,13 @@
 {{foreach(options.posts)}}
-<div class="post {{@this.type}} ava-side-tail">
-<a href="{{@this.handle}}"><img src="profiles/{{@this.user}}-64.png" class="avatar ava-side"></a>
+<div class="post {{@this['post-type']}} ava-side-tail">
+<a href="{{@this.handle}}"><img src="profiles/{{@this['user-id']}}-64.png" class="avatar ava-side"></a>
 {{if(@this['reblog-data'])}}
 	{{js(@this['reblog-data'] = JSON.parse(@this['reblog-data'])) /}}
 {{#else}}
 	{{js(@this['reblog-data'] = {}) /}}
 {{/if}}
 
-{{if(@this.type === 'text')}}
+{{if(@this['post-type'] === 'text')}}
 
 	{{if(@this.title)}}<h3 class="padded">{{@this.title}}</h3>{{/if}}
 
@@ -17,7 +17,7 @@
 			{{@this.content | markdown}}
 			<hr>
 		{{/foreach}}
-		<a href="{{@this.handle}}" class="reblog padded"><img src="profiles/{{@this.user}}-32.png" class="avatar ava-32"> {{@this.handle}}</a>
+		<a href="{{@this.handle}}" class="reblog padded"><img src="profiles/{{@this['user-id']}}-32.png" class="avatar ava-32"> {{@this.handle}}</a>
 	{{/if}}
 	
 	{{if(@this['body-text'])}}{{@this['body-text'] | markdown}}{{/if}}
@@ -29,7 +29,7 @@
 	{{/foreach}}</small>{{/if}}
 
 {{#else}}
-	{{if(@this.type === 'photo')}}
+	{{if(@this['post-type'] === 'photo')}}
 
 		<small class="padded">
 		{{if(@this['reblog-count'])}}

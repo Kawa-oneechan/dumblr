@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 			if (results.length) {
 				var my_id = results[0]['id'];
 
-				req.app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.user=follows.target LEFT JOIN users ON users.id=posts.user WHERE follows.follower=? ORDER BY timestamp DESC", [my_id], function (error, results, fields) {
+				req.app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE follows.follower=? ORDER BY `posted-on` DESC", [my_id], function (error, results, fields) {
 					if (error) throw error;
 					res.render('posts', { posts: results });
 				});
@@ -41,16 +41,16 @@ router.post('/', upload.any(), function(req, res, next) {
 					var timestamp = Date.time()
 					req.app.locals.connection.query("INSERT INTO posts SET ?", {
 						'id': timestamp,
-						'user': my_id,
-						'type': 'text',
+						'user-id': my_id,
+						'post-type': 'text',
 						'body-text': req.body['body-text'],
 						'title': req.body['title'],
 						'slug': req.app.locals.sluggify(req.body['body-text'], 64),
 						'tags': '',
-						'timestamp': timestamp
+						'posted-on': timestamp
 					}, function(error, results, fields) {
 						if (error) throw error;
-						req.app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.user=follows.target LEFT JOIN users ON users.id=posts.user WHERE posts.id = ?", [timestamp], function (error, results, fields) {
+						req.app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=`posts.user-id` WHERE posts.id = ?", [timestamp], function (error, results, fields) {
 							if (error) throw error;
 							res.render('post-loop', { posts: results });
 						});
