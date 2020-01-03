@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/:user/:post', function(req, res, next) {
-	console.log("hi im jack");
-	console.log(req.params);
 	req.params['post'] = parseInt(req.params['post']);
 	req.app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE users.handle=? AND posts.id=?", [req.params['user'], req.params['post']], function (error, results, fields) {
 		if (error) throw error;

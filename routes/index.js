@@ -50,13 +50,36 @@ router.post('/', upload.any(), function(req, res, next) {
 						'posted-on': timestamp
 					}, function(error, results, fields) {
 						if (error) throw error;
-						req.app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=`posts.user-id` WHERE posts.id = ?", [timestamp], function (error, results, fields) {
+						req.app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE posts.id = ?", [timestamp], function (error, results, fields) {
 							if (error) throw error;
 							res.render('post-loop', { posts: results });
 						});
 					});
 				}
 
+			}
+			else {
+				res.render('login', { message: 'Invalid login state.' });
+			}
+
+		})
+	}
+	else {
+		res.render('login', { message: 'Log in to see the Dumblr Tashboard.' });
+	}
+});
+
+router.get('/tags/:tag', function(req, res, next) {
+	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
+		req.app.locals.connection.query("SELECT id FROM users WHERE id=? AND `password-hash`=?", [req.cookies['dumblr_id'], req.cookies['dumblr_password']], function (error, results, fields) {
+
+			if (results.length) {
+				var my_id = results[0]['id'];
+
+				req.app.locals.connection.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE tags LIKE ? ORDER BY `posted-on` DESC", ['%"'+req.params['tag']+'"%'], function (error, results, fields) {
+					if (error) throw error;
+					res.render('posts', { posts: results });
+				});
 			}
 			else {
 				res.render('login', { message: 'Invalid login state.' });
