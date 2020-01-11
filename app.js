@@ -16,14 +16,14 @@ var app = express();
 
 app.use(helmet());
 
-app.locals.connection = mysql.createConnection({
+const db = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
 	password: '5eGsB9H3',
 	database: 'dumblr'
 });
-
-app.locals.connection.connect();
+db.connect();
+global.db = db;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
