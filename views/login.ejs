@@ -1,5 +1,5 @@
-{{include('top')/}}
-{{if(options.message)}}<div class="post message">{{message}}</div>{{/if}}
+<%- include('../partials/top') %>
+<% if (message) { %><div class="post message"><%= message %></div><% } %>
 <div class="post form">
 	<form action="/login" method="post">
 		<div>
@@ -15,4 +15,4 @@
 		</div>
 	</form>
 </div>
-{{include('bottom')/}}
+<%- include('../partials/bottom') %>

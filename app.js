@@ -4,10 +4,10 @@ const helmet = require('helmet');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const Sqrl = require('squirrelly');
 const mysql = require('mysql');
 const multer  = require('multer');
 const marked = require('marked');
+const ejs = require('ejs');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -27,7 +27,8 @@ global.db = db;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'squirrelly');
+app.set('view engine', 'ejs');
+//app.set('view options', { rmWhitespace: true});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -46,7 +47,7 @@ marked.setOptions({
   xhtml: false
 });
 
-app.locals.sluggify = function(str, maxlen)
+global.sluggify = function(str, maxlen)
 {
 	var out = '';
 	maxlen = maxlen || str.length;
@@ -60,22 +61,12 @@ app.locals.sluggify = function(str, maxlen)
 	return out;
 }
 
-Sqrl.defineFilter('markdown', function(str) {
+global.markdown = function(str) {
 	return marked(str);
-});
-
-Sqrl.defineFilter('slug', function(str) { return app.locals.sluggify(str); });
+};
 
 Date.prototype.toUnixTime = function() { return this.getTime() / 1000 | 0 };
 Date.time = function() { return new Date().toUnixTime(); }
-
-Sqrl.definePartial('top', Sqrl.renderFile('./views/top.squirrelly', { }));
-Sqrl.definePartial('bottom', Sqrl.renderFile('./views/bottom.squirrelly', { }));
-Sqrl.definePartial('postnewtoolbar', Sqrl.renderFile('./views/post-new-toolbar.squirrelly', { }));
-
-Sqrl.defineHelper('postloop', function(args, content, blocks) {
-	return Sqrl.renderFile('./views/post-loop.squirrelly', args);
-});
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);

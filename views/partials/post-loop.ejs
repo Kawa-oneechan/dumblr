@@ -1,0 +1,50 @@
+<% posts.forEach(function(post) { %>
+	<div class="post <%_post['post-type'] %> ava-side-tail">
+		<a href="/<%=post['handle']_%>"><img src="/profiles/<%=post['user-id']-%>-64.png" class="avatar ava-side"></a>
+
+		<% if(post['reblog-data']) { post['reblog-data'] = JSON.parse(post['reblog-data']) } else { post['reblog-data'] = {} } %>
+
+		<% if(post['post-type'] === 'text') { %>
+			<% if(post['title']) { %><h3 class="padded"><%=post['title']%></h3><% } %>
+
+			<% if(post['reblog-count']) post['reblog-data'].forEach(function(reblog, i) { %>
+				<a href="/<%_reblog['name']_%>" class="padded<% if(i > 0) { %> reblog<% } %>"><img src="/profiles/<%=reblog['id']-%>-32.png" class="avatar ava-32"> <%=reblog['name']%></a>
+				<% reblog['md'] = markdown(reblog['content']) %><%-reblog['md']%>
+				<hr>
+			<% }); %>
+
+			<% if(post['body-text']) { post['md'] = markdown(post['body-text']) %><%-post['md']%><% } %>
+
+			<%# TODO: TAGS %>
+
+		<% } else if(post['post-type'] === 'photo') { %>
+
+			<small class="padded">
+			<% if(post['reblog-count']) { %>
+				<%# TODO: REBLOGGED PHOTOSET %>
+			<% } else { %>
+				<a href="/<%=post['handle']_%>"><%=post['handle']_%></a>
+			<% } %>
+			</small>
+
+			<% if(post['title']) { %><h3 class="padded"><%=post['title']%></h3><% } %>
+
+			<% post['photos'] = JSON.parse(post['photos']) %>
+			<% if(post['photos'].length === 1) { %>
+				<img src="/uploads/<%=post['photos'][0]['url'] %>" alt="<%=post['photos'][0]['caption'] %>" class="photo photo-single">
+			<% } else { %>
+				<div class="photoset padded">
+					<% post['photos'].forEach(function(photo, i) { %>
+						<img src="/uploads/<%=photo['url'] %>" alt="<%=photo['caption'] %>" class="photo photo-set">
+					<% }); %>
+				</div>
+			<% } %>
+
+			<% if(post['body-text']) { post['md'] = markdown(post['body-text']) %><%-post['md']%><% } %>
+
+			<%# TODO: TAGS %>
+
+		<% } %>
+
+	</div>
+<% }); %>
