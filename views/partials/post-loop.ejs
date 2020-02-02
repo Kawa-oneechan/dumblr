@@ -1,5 +1,5 @@
 <% posts.forEach(function(post) { %>
-	<div class="post <%_post['post-type'] %> ava-side-tail">
+	<div class="border border-dark rounded shadow bg-white text-dark mb-4 post <%_post['post-type'] %> ava-side-tail">
 		<a href="/<%=post['handle']_%>"><img src="/profiles/<%=post['user-id']-%>-64.png" class="avatar ava-side"></a>
 
 		<% if(post['reblog-data']) { post['reblog-data'] = JSON.parse(post['reblog-data']) } else { post['reblog-data'] = {} } %>

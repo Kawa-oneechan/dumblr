@@ -12,17 +12,37 @@
 
 </div>
 
-<div id="shadow"></div>
+</div>
+</div>
+</div>
 
-<div id="new-text-post" class="modal-dialog">
-	<form action="/" method="post">
-		<input type="text" name="title" class="form-post-header" placeholder="Title"><br>
-		<textarea name="body-text" class="form-post-content"></textarea>
-		<input type="text" name="tags" class="form-post-tags"><br>
-		<input type="hidden" name="post-type" value="text">
-		<input onclick="submitAndPush(this.parentNode); closeModal('new-text-post'); return false;" type="submit" value="Submit">
-		<button onclick="closeModal('new-text-post'); return false;">Cancel</button>
-	</form>
+<div class="modal fade" id="new-text-post" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">New text post</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="/" method="post">
+					<div class="form-group">
+						<input type="text" name="title" class="form-control" placeholder="Title">
+					</div>
+					<div class="form-group">
+						<textarea name="body-text" class="form-control" rows="16"></textarea>
+					</div>
+					<div class="form-group">
+						<input type="text" name="tags" class="form-control form-control-sm form-control-tags" placeholder="Tags">
+					</div>
+					<input type="hidden" name="post-type" value="text">
+					<input onclick="submitAndPush(this.parentNode); closeModal('new-text-post'); return false;" type="submit" value="Submit" class="btn btn-primary">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script src="/javascripts/dialogs.js"></script>

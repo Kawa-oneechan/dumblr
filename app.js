@@ -30,6 +30,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //app.set('view options', { rmWhitespace: true});
 
+app.use('/stylesheets', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/stylesheets', express.static(__dirname + '/node_modules/bootstrap-tokenfield/dist/css'));
+app.use('/javascripts', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/javascripts', express.static(__dirname + '/node_modules/popper.js/dist'));
+app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap-tokenfield/dist'));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

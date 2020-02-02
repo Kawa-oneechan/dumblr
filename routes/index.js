@@ -45,14 +45,20 @@ router.post('/', upload.any(), function(req, res, next) {
 						'post-type': 'text',
 						'body-text': req.body['body-text'],
 						'title': req.body['title'],
-						'slug': req.app.locals.sluggify(req.body['body-text'], 64),
+						'photos': '',
+						'question': '',
+						'reblog-data': '',
+						'reblog-count': 0,
+						'slug': sluggify(req.body['body-text'], 64),
 						'tags': '',
+						'nsfw': 0,
+						'flagged': 0,
 						'posted-on': timestamp
 					}, function(error, results, fields) {
 						if (error) throw error;
 						db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE posts.id = ?", [timestamp], function (error, results, fields) {
 							if (error) throw error;
-							res.render('post-loop', { posts: results });
+							res.render('partials/post-loop', { posts: results });
 						});
 					});
 				}

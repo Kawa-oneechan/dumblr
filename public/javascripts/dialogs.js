@@ -1,3 +1,5 @@
+$('.form-control-tags').tokenfield();
+
 function openNewPost(postType) {
 	var id = 'new-'+postType+'-post';
 	var f = document.getElementById(id);

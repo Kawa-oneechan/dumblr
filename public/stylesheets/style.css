@@ -20,14 +20,6 @@ body {
 }
 
 div.post {
-	background: var(--postback);
-	border-radius: var(--radius);
-	box-shadow: var(--shadow);
-	color: var(--postfore);
-	width: var(--postwidth);
-	margin: 1em 0.5em;
-	margin-left: calc(5% + (0.5em + 64px));
-	padding: 1em 0;
 }
 
 div.post .padded, div.post p {
@@ -68,7 +60,7 @@ div.post img {
 	width: 64px;
 	height: 64px;
 	position: absolute;
-	left: calc(5% - 0.5em);
+	left: calc(-0.5em - 64px);
 	border-radius: var(--radius);
 	box-shadow: var(--shadow);
 }
@@ -109,11 +101,12 @@ div.ava-side-tail::before {
 	display: block;
 	background-size: contain;
 	position: absolute;
-	left: calc(5% + 64px - 4px);
+	left: calc(-0.5em + 4px);
+	margin-top: 1em;
 	border-color: transparent;
 	border-width: 10px;
 	border-style: solid;
-	border-right-color: var(--postback);
+	border-right-color: #fff;
 }
 
 .reblog::before {
@@ -131,61 +124,4 @@ div.ava-side-tail::before {
 h3 {
 	margin-top: 0;
 	margin-bottom: 0.25em;
-}
-
-#shadow {
-	position: fixed;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	background: #00000020;
-	display: none;
-}
-
-.modal-dialog {
-	background: var(--formback);
-	border-radius: var(--radius);
-	box-shadow: var(--shadow);
-	color: var(--formfore);
-	padding: 1em;
-	width: 640px;
-	height: 70%;
-	position: absolute;
-	left: calc(50% - 320px);
-	top: 2em;
-	display: none;
-}
-
-.modal-dialog form {
-	height: 100%;
-}
-
-.modal-dialog input[type='text'], .modal-dialog textarea {
-	background: none;
-	color: var(--formfore);
-	border: 1px solid var(--formfield);
-}
-
-.modal-dialog input[type='text']:focus, .modal-dialog textarea:focus {
-	border: 1px solid var(--formfieldhot);
-	outline: none;
-}
-
-.form-post-header {
-	border: none;
-	width: calc(100% - 0.5em);
-	padding: 0.25em;
-	font-size: 200%;
-}
-
-.form-post-content {
-	border: none;
-	width: calc(100% - 0.5em);
-	height: calc(100% - 7em);
-	font-size: 100%;
-	margin: 0;
-	margin-top: 0.25em;
-	padding: 0.25em;
-	resize: none;
 }
