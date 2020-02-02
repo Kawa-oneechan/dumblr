@@ -20,7 +20,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">New text post</h5>
+				<h5 class="modal-title">New text post</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -34,11 +34,11 @@
 						<textarea name="body-text" class="form-control" rows="16"></textarea>
 					</div>
 					<div class="form-group">
-						<input type="text" name="tags" class="form-control form-control-sm form-control-tags" placeholder="Tags">
+						<input type="text" name="tags" class="form-control form-control-sm form-control-tags col-sm-10">
 					</div>
 					<input type="hidden" name="post-type" value="text">
 					<input onclick="submitAndPush(this.parentNode); $('#new-text-post').modal('hide'); return false;" type="submit" value="Submit" class="btn btn-primary">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 				</form>
 			</div>
 		</div>

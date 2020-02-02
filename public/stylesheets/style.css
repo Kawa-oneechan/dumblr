@@ -1,52 +1,13 @@
-:root {
-	--background: #10171e;
-	--postback: #dbe3ea;
-	--postfore: #2c3944;
-	--messageback: #375069;
-	--messagefore: #dbe3ea;
-	--formback: #fbfbfb;
-	--formfore: #2c3944;
-	--formfield: #e4e6e8;
-	--formfieldhot: #b8c0c7;
-	--postwidth: 640px;
-	--radius: 0.25em;
-	--shadow: 0.25em 0.25em 0.5em #00000080;
-}
-
-.emoji { height: 1.4em; vertical-align: bottom; }
-
 body {
-	background: var(--background);
-	font-family: "Tahoma", "Arial", sans-serif;
-	font-size: 11pt;
+	background: #364758;
 }
 
-div.post {
-}
+.emoji { height: 1.4rem; vertical-align: bottom; }
 
-div.post .padded, div.post p {
-	padding: 0 1em;
-}
 
-div.message {
-	background: var(--messageback);
-	border-radius: var(--radius);
-	color: var(--messagefore);
-	text-align: center;
-}
-
-div.post a {
-	text-decoration: none;
-}
-
-div.post hr {
-	border: none;
-	border-top: 1px solid var(--messageback);
-}
-
-div.post img {
-	max-width: 100%;
-}
+#new-post-toolbar ion-icon { font-size: 4rem; }
+.nav-link { padding: 0; }
+.nav-link ion-icon { font-size: 2rem; }
 
 .photo-single {
 	max-width: initial;
@@ -121,9 +82,4 @@ div.ava-side-tail::before {
 	position: relative;
 	top: 18px;
 	left: 38px;
-}
-
-h3 {
-	margin-top: 0;
-	margin-bottom: 0.25em;
 }
