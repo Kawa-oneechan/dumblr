@@ -14,7 +14,12 @@ router.get('/', function(req, res, next) {
 
 				db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE follows.follower=? ORDER BY `posted-on` DESC", [my_id], function (error, results, fields) {
 					if (error) throw error;
-					res.render('posts', { posts: results });
+					if (results.length) {
+						res.render('posts', { posts: results, newPost: true, message: '' });
+					}
+					else {
+						res.render('posts-error', { message: 'No posts?' });
+					}
 				});
 			}
 			else {
@@ -60,7 +65,7 @@ router.post('/', upload.any(), function(req, res, next) {
 						if (error) throw error;
 						db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE posts.id = ?", [timestamp], function (error, results, fields) {
 							if (error) throw error;
-							res.render('partials/post-loop', { posts: results });
+							res.render('partials/post-loop', { posts: results, newPost: false, message: '' });
 						});
 					});
 					//res.send("lol");
@@ -87,7 +92,12 @@ router.get('/tags/:tag', function(req, res, next) {
 
 				db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE tags LIKE ? ORDER BY `posted-on` DESC", ['%"'+req.params['tag']+'"%'], function (error, results, fields) {
 					if (error) throw error;
-					res.render('posts', { posts: results });
+					if (results.length) {
+						res.render('posts', { posts: results, newPost: false, message: 'Showing posts with tag \'' + req.params['tag'] + '\'' });
+					}
+					else {
+						res.render('posts-error', { message: 'No results for this tag.' });
+					}
 				});
 			}
 			else {

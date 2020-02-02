@@ -36,6 +36,7 @@ app.use('/javascripts', express.static(__dirname + '/node_modules/jquery/dist'))
 app.use('/javascripts', express.static(__dirname + '/node_modules/popper.js/dist'));
 app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap-tokenfield/dist'));
+app.use('/javascripts', express.static(__dirname + '/node_modules/twemoji/dist'));
 
 app.use(logger('dev'));
 app.use(express.json());

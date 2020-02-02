@@ -1,11 +1,11 @@
 <%- include('partials/top') %>
 
-<%- include('partials/post-new-toolbar') %>
+<% if (newPost) { %><%- include('partials/post-new-toolbar') %><% } %>
 
 <div id="posts">
 
-<% if (posts.length == 0) { %>
-<div class="post message">No posts. Follow someone, maybe?</div>
+<% if (message) { %>
+<div class="border border-dark rounded shadow bg-primary text-light my-4 p-1 post"><%=message%></div>
 <% } %>
 
 <%- include('partials/post-loop') %>

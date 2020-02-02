@@ -1,4 +1,5 @@
 $('.form-control-tags').tokenfield();
+twemoji.parse(document.body);
 
 function openNewPost(postType) {
 	var id = 'new-'+postType+'-post';

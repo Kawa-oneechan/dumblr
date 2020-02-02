@@ -3,19 +3,22 @@
 		<a href="/<%=post['handle']_%>"><img src="/profiles/<%=post['user-id']-%>-64.png" class="avatar ava-side"></a>
 
 		<% if(post['reblog-data']) { post['reblog-data'] = JSON.parse(post['reblog-data']) } else { post['reblog-data'] = {} } %>
+		<% if(post['tags']) { post['tags'] = JSON.parse(post['tags']) } else { post['tags'] = {} } %>
 
 		<% if(post['post-type'] === 'text') { %>
-			<% if(post['title']) { %><h3 class="padded"><%=post['title']%></h3><% } %>
+			<% if(post['title']) { %><h3 class="ml-3 mt-2"><%=post['title']%></h3><% } %>
 
 			<% if(post['reblog-count']) post['reblog-data'].forEach(function(reblog, i) { %>
-				<a href="/<%_reblog['name']_%>" class="padded<% if(i > 0) { %> reblog<% } %>"><img src="/profiles/<%=reblog['id']-%>-32.png" class="avatar ava-32"> <%=reblog['name']%></a>
+				<a href="/<%=reblog['name']_%>" class="padded<% if(i > 0) { %> reblog<% } %>"><img src="/profiles/<%=reblog['id']-%>-32.png" class="avatar ava-32"> <%=reblog['name']%></a>
 				<% reblog['md'] = markdown(reblog['content']) %><%-reblog['md']%>
 				<hr>
 			<% }); %>
 
 			<% if(post['body-text']) { post['md'] = markdown(post['body-text']) %><%-post['md']%><% } %>
 
-			<%# TODO: TAGS %>
+			<% if(post['tags'].length) { %><p class="text-muted"> <% post['tags'].forEach(function(tag) { %>
+				<a class="text-muted" href="/tags/<%=tag[1]_%>">#<%=tag[0]%></a>
+			<% }); %> </p> <% } %>
 
 		<% } else if(post['post-type'] === 'photo') { %>
 

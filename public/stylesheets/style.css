@@ -13,6 +13,8 @@
 	--shadow: 0.25em 0.25em 0.5em #00000080;
 }
 
+.emoji { height: 1.4em; vertical-align: bottom; }
+
 body {
 	background: var(--background);
 	font-family: "Tahoma", "Arial", sans-serif;
