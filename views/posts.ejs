@@ -37,7 +37,7 @@
 						<input type="text" name="tags" class="form-control form-control-sm form-control-tags" placeholder="Tags">
 					</div>
 					<input type="hidden" name="post-type" value="text">
-					<input onclick="submitAndPush(this.parentNode); closeModal('new-text-post'); return false;" type="submit" value="Submit" class="btn btn-primary">
+					<input onclick="submitAndPush(this.parentNode); $('#new-text-post').modal('hide'); return false;" type="submit" value="Submit" class="btn btn-primary">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</form>
 			</div>

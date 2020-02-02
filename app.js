@@ -62,7 +62,7 @@ global.sluggify = function(str, maxlen)
 	for (var i = 0; i < str.length; i++) {
 		var c = str.charAt(i);
 		if (c == ' ') c = '-';
-		else if (c < 'a' || c > 'z') continue;
+		else if ((/[^a-zA-Z0-9]/.test(c))) continue;
 		out += c;
 	}
 	return out;

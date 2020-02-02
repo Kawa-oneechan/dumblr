@@ -38,6 +38,8 @@ router.post('/', upload.any(), function(req, res, next) {
 
 				if (req.body['post-type'] == 'text')
 				{
+					const stringTags = req.body['tags'].length > 2 ? JSON.stringify(req.body['tags'].split(', ').map(t => [t, sluggify(t)])) : '';
+					//console.log('tags: "' + stringTags + '"');
 					var timestamp = Date.time()
 					db.query("INSERT INTO posts SET ?", {
 						'id': timestamp,
@@ -50,7 +52,7 @@ router.post('/', upload.any(), function(req, res, next) {
 						'reblog-data': '',
 						'reblog-count': 0,
 						'slug': sluggify(req.body['body-text'], 64),
-						'tags': '',
+						'tags': stringTags,
 						'nsfw': 0,
 						'flagged': 0,
 						'posted-on': timestamp
@@ -61,6 +63,7 @@ router.post('/', upload.any(), function(req, res, next) {
 							res.render('partials/post-loop', { posts: results });
 						});
 					});
+					//res.send("lol");
 				}
 
 			}
