@@ -7,11 +7,14 @@ const secret = 'You thought it was a salt, but it was me, Dio!';
 
 router.get('/', function(req, res, next) {
 	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
-		db.query("SELECT id, `dash-color` FROM users WHERE id=? AND `password-hash`=?", [req.cookies['dumblr_id'], req.cookies['dumblr_password']], function (error, results, fields) {
+		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
 
 			if (results.length) {
-				global.dashColor = '#' + results[0]['dash-color'];
-				var my_id = results[0]['id'];
+				global.user = results.shift();
+				global.user.dashColor = '#' + global.user.dashColor;
+				var my_id = global.user.id;
+				global.user.otherBlogs = results;
+				console.log(global.user);
 
 				db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE follows.follower=? ORDER BY `posted-on` DESC", [my_id], function (error, results, fields) {
 					if (error) throw error;
@@ -37,8 +40,7 @@ router.get('/', function(req, res, next) {
 router.post('/', upload.any(), function(req, res, next) {
 	console.log("POST /");
 	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
-		db.query("SELECT id FROM users WHERE id=? AND `password-hash`=?", [req.cookies['dumblr_id'], req.cookies['dumblr_password']], function (error, results, fields) {
-
+		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
 			if (results.length) {
 				var my_id = results[0]['id'];
 
@@ -86,8 +88,7 @@ router.post('/', upload.any(), function(req, res, next) {
 
 router.get('/tags/:tag', function(req, res, next) {
 	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
-		db.query("SELECT id FROM users WHERE id=? AND `password-hash`=?", [req.cookies['dumblr_id'], req.cookies['dumblr_password']], function (error, results, fields) {
-
+		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
 			if (results.length) {
 				var my_id = results[0]['id'];
 
@@ -100,6 +101,82 @@ router.get('/tags/:tag', function(req, res, next) {
 						res.render('posts-error', { message: 'No results for this tag.' });
 					}
 				});
+			}
+			else {
+				res.render('login', { message: 'Invalid login state.' });
+			}
+
+		})
+	}
+	else {
+		res.render('login', { message: 'Log in to see the Dumblr Tashboard.' });
+	}
+});
+
+router.get('/dashboard/profile', function (req, res) {
+	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
+		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
+			if (results.length) {
+				global.user = results.shift();
+				global.user.dashColor = '#' + global.user.dashColor;
+				var my_id = global.user.id;
+				global.user.otherBlogs = results;
+				console.log(global.user);
+
+				db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE posts.`user-id`=? ORDER BY `posted-on` DESC", [my_id], function (error, results, fields) {
+					if (error) throw error;
+					if (results.length) {
+						res.render('posts', { posts: results, newPost: true, message: '' });
+					}
+					else {
+						res.render('posts-error', { message: 'No posts?' });
+					}
+				});
+			}
+			else {
+				res.render('login', { message: 'Invalid login state.' });
+			}
+
+		})
+	}
+	else {
+		res.render('login', { message: 'Log in to see the Dumblr Tashboard.' });
+	}
+});
+
+router.get('/dashboard/:user', function (req, res) {
+	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
+		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
+			if (results.length) {
+				var i = results.findIndex(e => e['handle'] == req.params.user)
+				if (i != -1) {
+					global.user = results.splice(i, 1)[0];
+					global.user.dashColor = '#' + global.user.dashColor;
+					var my_id = global.user.id;
+					global.user.otherBlogs = results;
+					console.log(global.user);
+
+					db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE posts.`user-id`=? ORDER BY `posted-on` DESC", [my_id], function (error, results, fields) {
+						if (error) throw error;
+						if (results.length) {
+							res.render('posts', { posts: results, newPost: true, message: '' });
+						}
+						else {
+							res.render('posts-error', { message: 'eeeeh?' });
+						}
+					});
+
+				}
+				else
+				{
+					global.user = results.shift();
+					global.user.dashColor = '#' + global.user.dashColor;
+					var my_id = global.user.id;
+					global.user.otherBlogs = results;
+					console.log(global.user);
+
+					res.render('posts-error', { message: 'Blog does not exist or is not yours.' });
+				}
 			}
 			else {
 				res.render('login', { message: 'Invalid login state.' });

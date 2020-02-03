@@ -19,13 +19,18 @@ body {
 	vertical-align: middle;
 }
 
+.ava-nav {
+	width: 2.2rem;
+	border-radius: .25rem;
+}
+
 .ava-side {
 	width: 64px;
 	height: 64px;
 	position: absolute;
 	left: calc(-0.5em - 64px);
-	border-radius: var(--radius);
-	box-shadow: var(--shadow);
+	border-radius: .25rem;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
 }
 
 .ava-24 {

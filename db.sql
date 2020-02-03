@@ -48,11 +48,14 @@ INSERT INTO `posts` (`id`, `user-id`, `post-type`, `body-text`, `title`, `photos
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `handle` varchar(256) NOT NULL,
   `title` varchar(512) NOT NULL,
   `password-hash` varchar(256) NOT NULL,
   `dash-color` varchar(6) NOT NULL,
   `personal-color` varchar(6) NOT NULL,
+  `all-nsfw` tinyint(1) NOT NULL DEFAULT '0',
+  `show-nsfw` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
