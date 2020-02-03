@@ -7,9 +7,10 @@ const secret = 'You thought it was a salt, but it was me, Dio!';
 
 router.get('/', function(req, res, next) {
 	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
-		db.query("SELECT id FROM users WHERE id=? AND `password-hash`=?", [req.cookies['dumblr_id'], req.cookies['dumblr_password']], function (error, results, fields) {
+		db.query("SELECT id, `dash-color` FROM users WHERE id=? AND `password-hash`=?", [req.cookies['dumblr_id'], req.cookies['dumblr_password']], function (error, results, fields) {
 
 			if (results.length) {
+				global.dashColor = '#' + results[0]['dash-color'];
 				var my_id = results[0]['id'];
 
 				db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE follows.follower=? ORDER BY `posted-on` DESC", [my_id], function (error, results, fields) {

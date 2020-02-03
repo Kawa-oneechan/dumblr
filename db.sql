@@ -1,4 +1,4 @@
-﻿SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -44,20 +44,22 @@ INSERT INTO `posts` (`id`, `user-id`, `post-type`, `body-text`, `title`, `photos
 (1577465463, 1577465377, 'photo', '', 'tfw when you don''t get it', '[{"url":"EMMyXglWwAEffIe.jpg","caption":"sumimasen what the fuck"},{"url":"05776.gif"}]', '', '', 0, '', '', 0, 0, 1577465463),
 (1577465466, 1577465377, 'photo', '', '', '[{"url":"9b9e5c15d0eb4c2a09e5018d2cd9ef65.jpg"}]', '', '', 0, '', '["shampoo","shampoo"]]', 0, 0, 1577465466),
 (1577562638, 1577465424, 'text', 'Lorem ipsum dolor kiss my ass', 'Posting a new post~', '', '', '', 0, 'lorem-ipsum-dolor-kiss-my-ass', '', 0, 0, 1577562638),
-(1577481040, 1577465377, 'text', 'We keep testing until productivity improves! ⬡', '⬡ Further testing ⬡', '', '', '', 0, 'we-keep-testing-until-productivity-improves-', '', 0, 0, 1577481040);
+(1577481040, 1577465377, 'text', 'We keep testing until productivity improves! &#x1F63D;', '&#x2699; Further testing &#x2699;', '', '', '', 0, 'we-keep-testing-until-productivity-improves-', '', 0, 0, 1577481040);
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
   `handle` varchar(256) NOT NULL,
   `title` varchar(512) NOT NULL,
   `password-hash` varchar(256) NOT NULL,
+  `dash-color` varchar(6) NOT NULL,
+  `personal-color` varchar(6) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 TRUNCATE TABLE `users`;
-INSERT INTO `users` (`id`, `handle`, `title`, `password-hash`) VALUES
-(1577465377, 'kawa-oneechan', '/* Logo Pending */', '2685e7f6724dad2eb0a8386e18dd3b0cb9d42b4aa92ee4e69197e543fac6e9af'),
-(1577465424, 'roxy-lalonde', 'rogue of vodka', '41ed2d68ec488b14803340cf572ded1ce23dcb51ddd1d32c208fdd125f1f5559');
+INSERT INTO `users` (`id`, `handle`, `title`, `password-hash`, `dash-color`, `personal-color`) VALUES
+(1577465377, 'kawa-oneechan', '/* Logo Pending */', '2685e7f6724dad2eb0a8386e18dd3b0cb9d42b4aa92ee4e69197e543fac6e9af', '', ''),
+(1577465424, 'roxy-lalonde', 'rogue of vodka', '41ed2d68ec488b14803340cf572ded1ce23dcb51ddd1d32c208fdd125f1f5559', '', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

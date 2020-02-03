@@ -6,15 +6,15 @@
 		<% if(post['tags']) { post['tags'] = JSON.parse(post['tags']) } else { post['tags'] = {} } %>
 
 		<% if(post['post-type'] === 'text') { %>
-			<% if(post['title']) { %><h3><%=post['title']%></h3><% } %>
+			<% if(post['title']) { %><h3><%=entities.decode(post['title'])%></h3><% } %>
 
 			<% if(post['reblog-count']) post['reblog-data'].forEach(function(reblog, i) { %>
 				<a href="/<%=reblog['name']_%>" class="padded<% if(i > 0) { %> reblog<% } %>"><img src="/profiles/<%=reblog['id']-%>-32.png" class="avatar ava-32"> <%=reblog['name']%></a>
-				<% reblog['md'] = markdown(reblog['content']) %><%-reblog['md']%>
+				<%-markdown(reblog['content'])%>
 				<hr>
 			<% }); %>
 
-			<% if(post['body-text']) { post['md'] = markdown(post['body-text']) %><%-post['md']%><% } %>
+			<% if(post['body-text']) { %><%-markdown(post['body-text']) %><% } %>
 
 			<% if(post['tags'].length) { %><p class="text-muted mb-0"> <% post['tags'].forEach(function(tag) { %>
 				<a class="text-muted" href="/tags/<%=tag[1]_%>">#<%=tag[0]%></a>
@@ -30,7 +30,7 @@
 			<% } %>
 			</small>
 
-			<% if(post['title']) { %><h3 class="padded"><%=post['title']%></h3><% } %>
+			<% if(post['title']) { %><h3 class="padded"><%=entities.decode(post['title'])%></h3><% } %>
 
 			<% post['photos'] = JSON.parse(post['photos']) %>
 			<% if(post['photos'].length === 1) { %>
@@ -43,7 +43,7 @@
 				</div>
 			<% } %>
 
-			<% if(post['body-text']) { post['md'] = markdown(post['body-text']) %><%-post['md']%><% } %>
+			<% if(post['body-text']) { %><%- markdown(post['body-text']) %><% } %>
 
 			<%# TODO: TAGS %>
 

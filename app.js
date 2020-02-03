@@ -8,6 +8,7 @@ const mysql = require('mysql');
 const multer  = require('multer');
 const marked = require('marked');
 const ejs = require('ejs');
+const Entities = require('html-entities').XmlEntities;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,6 +25,9 @@ const db = mysql.createConnection({
 });
 db.connect();
 global.db = db;
+global.entities = new Entities();
+
+global.dashColor = '';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
