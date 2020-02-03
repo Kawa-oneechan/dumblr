@@ -5,9 +5,9 @@ body {
 .emoji { height: 1.4rem; vertical-align: bottom; }
 
 
-#new-post-toolbar ion-icon { font-size: 4rem; }
+#new-post-toolbar .fas { font-size: 4rem; }
 .nav-link { padding: 0; }
-.nav-link ion-icon { font-size: 2rem; }
+.nav-link .fas { font-size: 2rem; }
 
 .photo-single {
 	max-width: initial;

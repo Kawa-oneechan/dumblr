@@ -32,11 +32,16 @@ app.set('view engine', 'ejs');
 
 app.use('/stylesheets', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/stylesheets', express.static(__dirname + '/node_modules/bootstrap-tokenfield/dist/css'));
+app.use('/stylesheets', express.static(__dirname + '/node_modules/bootstrap-markdown-editor-4/dist/css'));
+app.use('/stylesheets/fontawesome', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free/css'));
 app.use('/javascripts', express.static(__dirname + '/node_modules/jquery/dist'));
-app.use('/javascripts', express.static(__dirname + '/node_modules/popper.js/dist'));
+app.use('/javascripts', express.static(__dirname + '/node_modules/popper.js/dist/umd'));
 app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap-tokenfield/dist'));
+app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap-markdown-editor-4/dist/js'));
+app.use('/javascripts', express.static(__dirname + '/node_modules/ace-builds/src-min'));
 app.use('/javascripts', express.static(__dirname + '/node_modules/twemoji/dist'));
+app.use('/stylesheets/webfonts', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free/webfonts'));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -78,6 +83,10 @@ Date.time = function() { return new Date().toUnixTime(); }
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);
+
+app.post('/rendermarkdown', function (req, res) {
+	res.send(marked(req.body['content']));
+})
 
 // catch 404 and forward to error handler
 //app.use(function(req, res, next) {

@@ -1,4 +1,23 @@
 $('.form-control-tags').tokenfield();
+$('.form-control-markdown').markdownEditor({
+	preview: true,
+	onPreview: function(content, callback) {
+		$.ajax({
+			url: '/rendermarkdown',
+			type: 'POST',
+			dataType: 'html',
+			data: {content: content},
+		})
+		.done(function(result) {
+			callback(result);
+		});
+	},
+	fullscreen: false,
+	imageUpload: false,
+	/* imageUpload: true,
+	uploadPath: '/uploadpic', */
+});
+
 twemoji.parse(document.body);
 
 function openNewPost(postType) {
