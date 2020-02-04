@@ -29,19 +29,6 @@ db.connect();
 global.db = db;
 global.entities = new Entities();
 
-global.user = {
-	'id': 0,
-	'parent-id': 0,
-	'handle': '',
-	'title': 'Guest',
-	'password-hash': '*',
-	'dash-color': '',
-	'personal-color': '',
-	'all-nsfw': 0,
-	'show-nsfw': 0,
-	'otherBlogs': {}
-};
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
