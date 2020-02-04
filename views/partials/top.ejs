@@ -15,7 +15,7 @@
 		<script src="/javascripts/ace.js"></script>
 		<script src="/javascripts/bootstrap-markdown-editor.min.js"></script>
 		<script src="/javascripts/twemoji.min.js"></script>
-		<% if (global.user['dash-color']) { %><style>body{background:<%=global.user['dash-color']%></style><% } %>
+		<% if (user['dash-color']) { %><style>body{background:<%=user['dash-color']%></style><% } %>
 	</head>
 	<body>
 		<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark shadow" role="navigation">
@@ -25,12 +25,12 @@
 					<li class="nav-item active"><a class="nav-link" href="/" title="Home"><i class="fas fa-home"></i></a></li>
 					<li class="nav-item"><a class="nav-link" href="/" title="Messages"><i class="fas fa-envelope"></i></a></li>
 					<li class="nav-item"><a class="nav-link" href="/settings" title="Settings"><i class="fas fa-cog"></i></a></li>
-					<% if (global.user['id']) { %>
-					<li class="nav-item"><a class="nav-link" href="/dashboard/profile" title="Profile"><img src="/profiles/<%=global.user['id']-%>-64.png" class="avatar ava-nav"></a></li>
-					<% if (global.user.otherBlogs.length) { %>
+					<% if (user['id']) { %>
+					<li class="nav-item"><a class="nav-link" href="/dashboard/profile" title="Profile"><img src="/profiles/<%=user['id']-%>-64.png" class="avatar ava-nav"></a></li>
+					<% if (user.otherBlogs.length) { %>
 					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<% global.user.otherBlogs.forEach(function(blog) { %>
+						<% user.otherBlogs.forEach(function(blog) { %>
 							<a class="dropdown-item" href="/dashboard/<%=blog['handle']-%>"><img src="/profiles/<%=blog['id']-%>-32.png" class="avatar ava-list"> <%=blog['title']-%></a>
 						<% }); %>
 						</div>

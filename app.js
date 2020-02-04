@@ -9,6 +9,8 @@ const multer  = require('multer');
 const marked = require('marked');
 const ejs = require('ejs');
 const Entities = require('html-entities').XmlEntities;
+var crypto = require('crypto');
+const secret = 'You thought it was a salt, but it was me, Dio!';
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -96,8 +98,53 @@ global.markdown = function(str) {
 Date.prototype.toUnixTime = function() { return this.getTime() / 1000 | 0 };
 Date.time = function() { return new Date().toUnixTime(); }
 
-app.use('/', indexRouter);
+global.notUsers = [ 'dashboard', 'tags', 'login', 'logout' ];
+
+app.get('/logout', function (req, res) {
+	res.clearCookie('dumblr_id');
+	res.clearCookie('dumblr_password');
+	res.redirect('/');
+});
+
+app.post('/login', function (req, res) {
+	const hash = crypto.createHmac('sha256', secret).update(req.body['password']).digest('hex');
+	console.log("trying to log in as '"+req.body['username']+"' with hash '"+hash+"'");
+	db.query("SELECT id FROM users WHERE handle=? AND `password-hash`=?", [req.body['username'], hash], function (error, results, fields) {
+		if (results.length) {
+			res.cookie('dumblr_id', results[0]['id']);
+			res.cookie('dumblr_password', hash);
+			res.redirect('/');
+		} else {
+			res.render('login', { message: 'Invalid user name or password.' });
+		}
+	});
+});
+
 app.use('/', usersRouter);
+app.use(function(req, res, next) {
+	console.log('Login check!');
+	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
+		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
+			if (results.length) {
+				req.user = results.shift();
+				if (req.user.dashColor)
+					req.user.dashColor = '#' + req.user.dashColor;
+				req.user.otherBlogs = results;
+				console.log(req.user);
+
+				next();
+			}
+			else {
+				res.render('login', { message: 'Invalid login state.' });
+			}
+
+		})
+	}
+	else {
+		res.render('login', { message: 'Log in to see the Dumblr Tashboard.' });
+	}
+});
+app.use('/', indexRouter);
 
 app.post('/rendermarkdown', function (req, res) {
 	res.send(marked(req.body['content']));
