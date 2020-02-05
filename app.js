@@ -9,7 +9,8 @@ const multer  = require('multer');
 const marked = require('marked');
 const ejs = require('ejs');
 const Entities = require('html-entities').XmlEntities;
-var crypto = require('crypto');
+const fs = require('fs');
+const crypto = require('crypto');
 const secret = 'You thought it was a salt, but it was me, Dio!';
 
 var indexRouter = require('./routes/index');
@@ -82,27 +83,34 @@ global.markdown = function(str) {
 	return marked(str);
 };
 
+global.grabRandomBackground = function() {
+	var files = fs.readdirSync(path.join(__dirname, 'public/uploads'));
+	files = files.filter(f => f.endsWith('.gif'));
+	return files[Math.floor(Math.random() * files.length)];
+}
+
 Date.prototype.toUnixTime = function() { return this.getTime() / 1000 | 0 };
 Date.time = function() { return new Date().toUnixTime(); }
 
-global.notUsers = [ 'dashboard', 'tags', 'login', 'logout' ];
+global.notUsers = [ 'api', 'dashboard', 'tags', 'login', 'logout' ];
 
-app.get('/logout', function (req, res) {
+app.get('/logout', function (req, res, next) {
 	res.clearCookie('dumblr_id');
 	res.clearCookie('dumblr_password');
 	res.redirect('/');
 });
 
-app.post('/login', function (req, res) {
+app.post('/login', function (req, res, next) {
 	const hash = crypto.createHmac('sha256', secret).update(req.body['password']).digest('hex');
 	console.log("trying to log in as '"+req.body['username']+"' with hash '"+hash+"'");
 	db.query("SELECT id FROM users WHERE handle=? AND `password-hash`=?", [req.body['username'], hash], function (error, results, fields) {
+		console.log(results);
 		if (results.length) {
 			res.cookie('dumblr_id', results[0]['id']);
 			res.cookie('dumblr_password', hash);
 			res.redirect('/');
 		} else {
-			res.render('login', { message: 'Invalid user name or password.' });
+			res.render('login', { message: 'Invalid user name or password.', rndBack: global.grabRandomBackground() });
 		}
 	});
 });

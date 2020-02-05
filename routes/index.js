@@ -4,9 +4,7 @@ var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
 var mylogin = require('../login.js')
 
-router.use(mylogin({/*...oooooh...*/}))
-
-router.get('/', function(req, res, next) {
+router.get('/', mylogin({allowGuest:false}), function(req, res, next) {
 	db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE follows.follower=? ORDER BY `posted-on` DESC", [req.user.id], function (error, results, fields) {
 		if (error) throw error;
 		if (results.length) {
@@ -62,7 +60,7 @@ router.get('/tags/:tag', function(req, res, next) {
 	})
 });
 
-router.get('/dashboard/profile', function (req, res) {
+router.get('/dashboard/profile', function (req, res, next) {
 	db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE posts.`user-id`=? ORDER BY `posted-on` DESC", [req.user.id], function (error, results, fields) {
 		if (error) throw error;
 		if (results.length) {
@@ -74,7 +72,7 @@ router.get('/dashboard/profile', function (req, res) {
 	})
 });
 
-router.get('/dashboard/:user', function (req, res) {
+router.get('/dashboard/:user', function (req, res, next) {
 	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
 		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
 			if (results.length) {
@@ -105,13 +103,13 @@ router.get('/dashboard/:user', function (req, res) {
 				}
 			}
 			else {
-				res.render('login', { user: req.user, message: 'Invalid login state.' });
+				res.render('login', { user: req.user, message: 'Invalid login state.', rndBack: global.grabRandomBackground() });
 			}
 
 		})
 	}
 	else {
-		res.render('login', { user: req.user, message: 'Log in to see the Dumblr Tashboard.' });
+		res.render('login', { user: req.user, message: '', rndBack: global.grabRandomBackground() });
 	}
 });
 
