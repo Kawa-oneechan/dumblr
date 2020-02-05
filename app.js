@@ -34,18 +34,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //app.set('view options', { rmWhitespace: true});
 
-app.use('/stylesheets', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
-app.use('/stylesheets', express.static(__dirname + '/node_modules/bootstrap-tokenfield/dist/css'));
-app.use('/stylesheets', express.static(__dirname + '/node_modules/bootstrap-markdown-editor-4/dist/css'));
-app.use('/stylesheets/fontawesome', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free/css'));
-app.use('/javascripts', express.static(__dirname + '/node_modules/jquery/dist'));
-app.use('/javascripts', express.static(__dirname + '/node_modules/popper.js/dist/umd'));
-app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
-app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap-tokenfield/dist'));
-app.use('/javascripts', express.static(__dirname + '/node_modules/bootstrap-markdown-editor-4/dist/js'));
-app.use('/javascripts', express.static(__dirname + '/node_modules/ace-builds/src-min'));
-app.use('/javascripts', express.static(__dirname + '/node_modules/twemoji/dist'));
-app.use('/stylesheets/webfonts', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free/webfonts'));
+app.use('/stylesheets', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
+app.use('/stylesheets', express.static(path.join(__dirname, 'node_modules/bootstrap-tokenfield/dist/css')));
+app.use('/stylesheets', express.static(path.join(__dirname, 'node_modules/bootstrap-markdown-editor-4/dist/css')));
+app.use('/stylesheets/fontawesome', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/css')));
+app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
+app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/popper.js/dist/umd')));
+app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
+app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/bootstrap-tokenfield/dist')));
+app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/bootstrap-markdown-editor-4/dist/js')));
+app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/ace-builds/src-min')));
+app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/twemoji/dist')));
+app.use('/stylesheets/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts')));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -108,29 +108,6 @@ app.post('/login', function (req, res) {
 });
 
 app.use('/', usersRouter);
-app.use(function(req, res, next) {
-	console.log('Login check!');
-	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
-		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
-			if (results.length) {
-				req.user = results.shift();
-				if (req.user.dashColor)
-					req.user.dashColor = '#' + req.user.dashColor;
-				req.user.otherBlogs = results;
-				console.log(req.user);
-
-				next();
-			}
-			else {
-				res.render('login', { message: 'Invalid login state.' });
-			}
-
-		})
-	}
-	else {
-		res.render('login', { message: 'Log in to see the Dumblr Tashboard.' });
-	}
-});
 app.use('/', indexRouter);
 
 app.post('/rendermarkdown', function (req, res) {

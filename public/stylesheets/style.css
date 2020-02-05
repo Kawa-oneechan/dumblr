@@ -2,7 +2,7 @@ body {
 	background: #364758;
 }
 
-.emoji { height: 1.4rem; vertical-align: bottom; }
+.emoji { height: 1.4rem; vertical-align: baseline; }
 
 
 #new-post-toolbar .fas { font-size: 4rem; }

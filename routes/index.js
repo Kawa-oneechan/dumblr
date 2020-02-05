@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
+var mylogin = require('../login.js')
+
+router.use(mylogin({/*...oooooh...*/}))
 
 router.get('/', function(req, res, next) {
 	db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN follows ON posts.`user-id`=follows.target LEFT JOIN users ON users.id=posts.`user-id` WHERE follows.follower=? ORDER BY `posted-on` DESC", [req.user.id], function (error, results, fields) {
