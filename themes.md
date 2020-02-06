@@ -35,9 +35,18 @@ EJS documentation: https://ejs.co/
 | `{PortraitURL-64}` | Portrait photo URL for your blog. 64-pixels by 64-pixels. | `/profiles/<%=user['id']-%>-64.png`
 | `{PortraitURL-96}` | Portrait photo URL for your blog. 96-pixels by 96-pixels. | 
 | `{PortraitURL-128}` | Portrait photo URL for your blog. 128-pixels by 128-pixels. | 
-| `{PortraitURL-32}` | Portrait photo URL for your blog. | `/profiles/<%=user['id']-%>-32.png`
-| `{PortraitURL-150}` | Portrait photo URL for your blog. | `/profiles/<%=user['id']-%>-150.png`
 | `{CopyrightYears}` | Displays the span of years your blog has existed. | 
+
+### Differences
+Mostly just the `PortraitURL` blocks. Right now I have 32, 64, and 150px versions:
+
+| Variable | EJS counterpart
+|----------|----------------
+| `{PortraitURL-32}` | `/profiles/<%=user['id']-%>-32.png`
+| `{PortraitURL-64}` | `/profiles/<%=user['id']-%>-64.png`
+| `{PortraitURL-150}` | `/profiles/<%=user['id']-%>-150.png`
+
+This *could* be replaced easily enough. The current dash view uses 64 and 32px versions. I'm thinking 16, 32, 64, and 128, with anything inbetween done in-place. All of that also goes for the various variants below, of course.
 
 ## Global appearance
 | Variable | Description | EJS counterpart
