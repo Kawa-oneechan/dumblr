@@ -15,13 +15,13 @@ EJS documentation: https://ejs.co/
 ## Basic variables
 | Variable | Description | EJS counterpart
 |----------|-------------|----------------
-| `{Title}` | The HTML-safe title of your blog. | `<%=user['title']%>`
-| `{Description}` | The description of your blog. (may include HTML) | `<%-user['description']%>`
-| `{MetaDescription}` | The HTML-safe description of your blog. e.g., `<meta name="description" content="{MetaDescription}" />` | `<%=user['description']%>`
-| `{BlogURL}` | Main URL for your blog. | `http://localhost:3000/<%-user['handle']%>`
+| `{Title}` | The HTML-safe title of your blog. | `<%=theme['title']%>`
+| `{Description}` | The description of your blog. (may include HTML) | `<%-theme['description']%>`
+| `{MetaDescription}` | The HTML-safe description of your blog. e.g., `<meta name="description" content="{MetaDescription}" />` | `<%=theme['description']%>`
+| `{BlogURL}` | Main URL for your blog. | `http://localhost:3000/<%-theme['handle']%>`
 | `{RSS}` | RSS feed URL for your blog. | 
 | `{Favicon}` | Favicon URL for your blog. | 
-| `{CustomCSS}` | Any custom CSS code added on your Customize page. | `<%-user['custom-css']%>`
+| `{CustomCSS}` | Any custom CSS code added on your Customize page. | `<%-theme['custom-css']%>`
 | `{block:PermalinkPage}{/block:PermalinkPage}` | Rendered on post permalink pages. Useful for embedding comment widgets | `<% if(single) { %><% } %>`
 | `{block:IndexPage}{/block:IndexPage}` | Rendered on index (post) pages. | `<% if(!single) { %><% } %>`
 | `{block:HomePage}{/block:HomePage}` | Rendered on the main post page. | 
@@ -32,7 +32,7 @@ EJS documentation: https://ejs.co/
 | `{PortraitURL-30}` | Portrait photo URL for your blog. 30-pixels by 30-pixels. | 
 | `{PortraitURL-40}` | Portrait photo URL for your blog. 40-pixels by 40-pixels. | 
 | `{PortraitURL-48}` | Portrait photo URL for your blog. 48-pixels by 48-pixels. | 
-| `{PortraitURL-64}` | Portrait photo URL for your blog. 64-pixels by 64-pixels. | `/profiles/<%=user['id']-%>-64.png`
+| `{PortraitURL-64}` | Portrait photo URL for your blog. 64-pixels by 64-pixels. | `/profiles/<%=theme['id']-%>-64.png`
 | `{PortraitURL-96}` | Portrait photo URL for your blog. 96-pixels by 96-pixels. | 
 | `{PortraitURL-128}` | Portrait photo URL for your blog. 128-pixels by 128-pixels. | 
 | `{CopyrightYears}` | Displays the span of years your blog has existed. | 
@@ -42,9 +42,9 @@ Mostly just the `PortraitURL` blocks. Right now I have 32, 64, and 150px version
 
 | Variable | EJS counterpart
 |----------|----------------
-| `{PortraitURL-32}` | `/profiles/<%=user['id']-%>-32.png`
-| `{PortraitURL-64}` | `/profiles/<%=user['id']-%>-64.png`
-| `{PortraitURL-150}` | `/profiles/<%=user['id']-%>-150.png`
+| `{PortraitURL-32}` | `/profiles/<%=theme['id']-%>-32.png`
+| `{PortraitURL-64}` | `/profiles/<%=theme['id']-%>-64.png`
+| `{PortraitURL-150}` | `/profiles/<%=theme['id']-%>-150.png`
 
 This *could* be replaced easily enough. The current dash view uses 64 and 32px versions. I'm thinking 16, 32, 64, and 128, with anything inbetween done in-place. All of that also goes for the various variants below, of course.
 
@@ -180,7 +180,7 @@ This *could* be replaced easily enough. The current dash view uses 64 and 32px v
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:Title}{/block:Title}` | Rendered if there is a title for this post. | `<% if(post['title']) { %><% } %>`
-| `{Title}` | The title of this post. | `<%=entities.decode(post['title'])%></h3>`
+| `{Title}` | The title of this post. | `<%=entities.decode(post['title'])%>`
 | `{Body}` | The content of this post. | `<%-markdown(post['body-text']) %>` 
 
 ## Photo Posts
