@@ -92,8 +92,6 @@ global.grabRandomBackground = function() {
 Date.prototype.toUnixTime = function() { return this.getTime() / 1000 | 0 };
 Date.time = function() { return new Date().toUnixTime(); }
 
-global.notUsers = [ 'api', 'dashboard', 'tags', 'login', 'logout' ];
-
 app.get('/logout', function (req, res, next) {
 	res.clearCookie('dumblr_id');
 	res.clearCookie('dumblr_password');
@@ -115,8 +113,8 @@ app.post('/login', function (req, res, next) {
 	});
 });
 
-app.use('/', usersRouter);
 app.use('/', indexRouter);
+app.use('/', usersRouter);
 
 app.post('/rendermarkdown', function (req, res) {
 	res.send(marked(req.body['content']));

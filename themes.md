@@ -6,20 +6,26 @@
 Actual list of items and their descriptions ripped straight from Tumblr's docs.
 EJS documentation: https://ejs.co/
 
+## Process
+
+1. Get the blog's theme file, escape all `<%` and `%>` so we can't use EJS *in* the theme.
+2. Convert each supported block from `{Tumblr}` to `<%EJS%>`.
+3. Pass it to `ejs.render`.
+
 ## Basic variables
 | Variable | Description | EJS counterpart
 |----------|-------------|----------------
 | `{Title}` | The HTML-safe title of your blog. | `<%=user['title']%>`
 | `{Description}` | The description of your blog. (may include HTML) | `<%-user['description']%>`
-| `{MetaDescription}` | The HTML-safe description of your blog. e.g., `<meta name="description" content="{MetaDescription}" />` | 
-| `{BlogURL}` | Main URL for your blog. | 
+| `{MetaDescription}` | The HTML-safe description of your blog. e.g., `<meta name="description" content="{MetaDescription}" />` | `<%=user['description']%>`
+| `{BlogURL}` | Main URL for your blog. | `http://localhost:3000/<%-user['handle']%>`
 | `{RSS}` | RSS feed URL for your blog. | 
 | `{Favicon}` | Favicon URL for your blog. | 
-| `{CustomCSS}` | Any custom CSS code added on your Customize page. | 
-| `{block:PermalinkPage}{/block:PermalinkPage}` | Rendered on post permalink pages. Useful for embedding comment widgets | 
-| `{block:IndexPage}{/block:IndexPage}` | Rendered on index (post) pages. | 
+| `{CustomCSS}` | Any custom CSS code added on your Customize page. | `<%-user['custom-css']%>`
+| `{block:PermalinkPage}{/block:PermalinkPage}` | Rendered on post permalink pages. Useful for embedding comment widgets | `<% if(single) { %><% } %>`
+| `{block:IndexPage}{/block:IndexPage}` | Rendered on index (post) pages. | `<% if(!single) { %><% } %>`
 | `{block:HomePage}{/block:HomePage}` | Rendered on the main post page. | 
-| `{block:PostTitle}{PostTitle}{/block:PostTitle}` | Rendered on permalink pages. (Useful for displaying the current post's title in the page title). Example: `<title>{Title}{block:PostTitle}` - `{PostTitle}{/block:PostTitle}</title>` | 
+| `{block:PostTitle}{PostTitle}{/block:PostTitle}` | Rendered on permalink pages. (Useful for displaying the current post's title in the page title). Example: `<title>{Title}{block:PostTitle} - {PostTitle}{/block:PostTitle}</title>` | `<% if(single) { %><% } %>`
 | `{block:PostSummary}{PostSummary}{/block:PostSummary}` | Identical to `{PostTitle}`, but will automatically generate a summary if a title doesn't exist. | 
 | `{PortraitURL-16}` | Portrait photo URL for your blog. 16-pixels by 16-pixels. | 
 | `{PortraitURL-24}` | Portrait photo URL for your blog. 24-pixels by 24-pixels. | 
@@ -31,26 +37,26 @@ EJS documentation: https://ejs.co/
 | `{PortraitURL-128}` | Portrait photo URL for your blog. 128-pixels by 128-pixels. | 
 | `{PortraitURL-32}` | Portrait photo URL for your blog. | `/profiles/<%=user['id']-%>-32.png`
 | `{PortraitURL-150}` | Portrait photo URL for your blog. | `/profiles/<%=user['id']-%>-150.png`
-| `{CopyrightYears}` | Displays the span of years your blog has existed.
+| `{CopyrightYears}` | Displays the span of years your blog has existed. | 
 
 ## Global appearance
 | Variable | Description | EJS counterpart
 |----------|-------------|----------------
 | `{TitleFont}` | The font used for your blog title. | 
 | `{TitleFontWeight}` | The weight of your title font ("normal" or "bold"). | 
-| `{BackgroundColor}` | The background color of your blog. | 
-| `{TitleColor}` | The title color of your blog. | 
-| `{AccentColor}` | The accent color of your blog. | 
-| `{HeaderImage}` | URL of your header image in all its glory. This will always have a value, even if it's a default header image. | 
+| `{BackgroundColor}` | The background color of your blog. | `<%=theme['background-color']%>`
+| `{TitleColor}` | The title color of your blog. | `<%=theme['title-color']%>`
+| `{AccentColor}` | The accent color of your blog. | `<%=theme['accent-color']%>`
+| `{HeaderImage}` | URL of your header image in all its glory. This will always have a value, even if it's a default header image. | `<%=theme['header-image']%>`
 | `{AvatarShape}` | The display shape of your avatar ("circle" or "square"). | 
-| `{block:ShowTitle}{/block:ShowTitle}` | Rendered if you have "Show title" enabled. | 
-| `{block:HideTitle}{/block:HideTitle}` | Rendered if you have "Show title" disabled. | 
-| `{block:ShowDescription}{/block:ShowDescription}` | Rendered if you have "Show description" enabled. | 
-| `{block:HideDescription}{/block:HideDescription}` | Rendered if you have "Show description" disabled. | 
-| `{block:ShowAvatar}{/block:ShowAvatar}` | Rendered if you have "Show avatar" enabled. | 
-| `{block:HideAvatar}{/block:HideAvatar}` | Rendered if you have "Show avatar" disabled. | 
-| `{block:ShowHeaderImage}{/block:ShowHeaderImage}` | Rendered if you have "Show header image" enabled. | 
-| `{block:HideHeaderImage}{/block:HideHeaderImage}` | Rendered if you have "Show header image" disabled.
+| `{block:ShowTitle}{/block:ShowTitle}` | Rendered if you have "Show title" enabled. | `<% if(theme['show-title']) { %><% } %>`
+| `{block:HideTitle}{/block:HideTitle}` | Rendered if you have "Show title" disabled. | `<% if(!theme['show-title']) { %><% } %>`
+| `{block:ShowDescription}{/block:ShowDescription}` | Rendered if you have "Show description" enabled. | `<% if(theme['show-description']) { %><% } %>`
+| `{block:HideDescription}{/block:HideDescription}` | Rendered if you have "Show description" disabled. | `<% if(!theme['show-description']) { %><% } %>`
+| `{block:ShowAvatar}{/block:ShowAvatar}` | Rendered if you have "Show avatar" enabled. | `<% if(theme['show-avatar']) { %><% } %>`
+| `{block:HideAvatar}{/block:HideAvatar}` | Rendered if you have "Show avatar" disabled. | `<% if(!theme['show-avatar']) { %><% } %>`
+| `{block:ShowHeaderImage}{/block:ShowHeaderImage}` | Rendered if you have "Show header image" enabled. | `<% if(theme['show-header']) { %><% } %>`
+| `{block:HideHeaderImage}{/block:HideHeaderImage}` | Rendered if you have "Show header image" disabled. | `<% if(!theme['show-header']) { %><% } %>`
 
 ## Navigation 
 | Variable | Description | EJS counterpart
@@ -65,60 +71,60 @@ EJS documentation: https://ejs.co/
 | `{block:SubmissionsEnabled}{/block:SubmissionsEnabled}` | Rendered if Submissions are enabled. | 
 | `{SubmitLabel}` | The customizable label for the Submit link. Example: "Submit" | 
 | `{block:AskEnabled}{/block:AskEnabled}` | Rendered if asking questions is enabled. | 
-| `{AskLabel}` | The customizable label for the Ask link. Example: "Ask me anything"
+| `{AskLabel}` | The customizable label for the Ask link. Example: "Ask me anything" | `<%=theme['ask-label']%>`
 
-## Jump Pagination | 
+## Jump Pagination
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:JumpPagination length="5"}{/block:JumpPagination}` | Rendered for each page *greater than the **current page** minus one-half **length** up to **current page** plus one-half **length**.* | 
 | `{block:CurrentPage}{/block:CurrentPage}` | Rendered when jump page is the current page. | 
 | `{block:JumpPage}{/block:JumpPage}` | Rendered when jump page is not the current page. | 
 | `{PageNumber}` | Page number for jump page. | 
-| `{URL}` | URL for jump page.
+| `{URL}` | URL for jump page. | 
 
-## Pages | 
+## Pages
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:HasPages}{/block:HasPages}` | Rendered if you have defined any custom pages. | 
 | `{block:Pages}{/block:Pages}` | Rendered for each custom page. | 
 | `{URL}` | The URL for this page. | 
-| `{Label}` | The label for this page.
+| `{Label}` | The label for this page. | 
 
-## Permalink Navigation | 
+## Permalink Navigation
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:PermalinkPagination}` | Rendered if there is a "previous" or "next" post. | 
 | `{block:PreviousPost}{/block:PreviousPost}` | Rendered if there is a "previous" post to navigate to. | 
 | `{block:NextPost}{/block:NextPost}` | Rendered if there is a "next" post to navigate to. | 
 | `{PreviousPost}` | URL for the "previous" (newer) post. | 
-| `{NextPost}` | URL for the "next" (older) post.
+| `{NextPost}` | URL for the "next" (older) post. | 
 
-## Posts | 
+## Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
-| `{block:Posts}{/block:Posts}` | This block gets rendered for each post in reverse chronological order. The number of posts that appear per-page can be configured in the Customize area for the blog on the Advanced tab. | 
+| `{block:Posts}{/block:Posts}` | This block gets rendered for each post in reverse chronological order. The number of posts that appear per-page can be configured in the Customize area for the blog on the Advanced tab. | `<% posts.forEach(function(post) { %><% }); %>`
 | `{block:Posts inlineMediaWidth="500"}{/block:Posts}` | Width for inline media in the post body. Minimum: 250px | 
 | `{block:Posts inlineNestedMediaWidth="250"}{/block:Posts}` | Width for inline media in the reblog chain. Minimum: 250px (must be smaller than or same as `inlineMediaWidth`) | 
-| `{block:Text}{/block:Text}` | Rendered for Text posts. | 
-| `{block:Photo}{/block:Photo}` | Rendered for Photo posts. | 
+| `{block:Text}{/block:Text}` | Rendered for Text posts. | `<% if(post['post-type'] === 'text') { %><% } %>`
+| `{block:Photo}{/block:Photo}` | Rendered for Photo posts. | `<% if(post['post-type'] === 'photo') { %><% } %>`
 | `{block:Panorama}{/block:Panorama}` | Rendered for Panorama posts. | 
-| `{block:Photoset}{/block:Photoset}` | Rendered for Photoset posts. | 
-| `{block:Quote}{/block:Quote}` | Rendered for Quote posts. | 
-| `{block:Link}{/block:Link}` | Rendered for Link posts. | 
-| `{block:Chat}{/block:Chat}` | Rendered for Conversation posts. | 
-| `{block:Audio}{/block:Audio}` | Rendered for Audio posts. | 
-| `{block:Video}{/block:Video}` | Rendered for Video posts. | 
-| `{block:Answer}{/block:Answer}` | Rendered for Answer posts. | 
-| `{PostType}` | The name of the current post type. | 
-| `{Permalink}` | The permalink for a post. Example: `"https://sample.tumblr.com/post/123"` | 
-| `{RelativePermalink}` | The permalink for a post, but not including the domain. Example: `"/post/123"` | 
+| `{block:Photoset}{/block:Photoset}` | Rendered for Photoset posts. | `<% if(post['post-type'] === 'photoset') { %><% } %>`
+| `{block:Quote}{/block:Quote}` | Rendered for Quote posts. | `<% if(post['post-type'] === 'quote') { %><% } %>`
+| `{block:Link}{/block:Link}` | Rendered for Link posts. | `<% if(post['post-type'] === 'link') { %><% } %>`
+| `{block:Chat}{/block:Chat}` | Rendered for Conversation posts. | `<% if(post['post-type'] === 'conversation') { %><% } %>`
+| `{block:Audio}{/block:Audio}` | Rendered for Audio posts. | `<% if(post['post-type'] === 'audio') { %><% } %>`
+| `{block:Video}{/block:Video}` | Rendered for Video posts. | `<% if(post['post-type'] === 'video') { %><% } %>`
+| `{block:Answer}{/block:Answer}` | Rendered for Answer posts. | `<% if(post['post-type'] === 'answer') { %><% } %>`
+| `{PostType}` | The name of the current post type. | `<%=post['post-type']%>`
+| `{Permalink}` | The permalink for a post. Example: `"https://sample.tumblr.com/post/123"` | `{BlogURL}/post/<%=post['id']%>`
+| `{RelativePermalink}` | The permalink for a post, but not including the domain. Example: `"/post/123"` | `/post/<%=post['id']%>`
 | `{ShortURL}` | A shorter URL that redirects to this post. Example: `"https://www.tumblr.com/xpv5qtavm"` | 
 | `{EmbedUrl}` | URL of the embed page where users can copy the post's embed code. Example: `"https://sample.tumblr.com/post/123/embed"` | 
-| `{PostID}` | The numeric ID for a post. Example: `1234567` | 
+| `{PostID}` | The numeric ID for a post. Example: `1234567` | `<%=post['id']%>`
 | `{TagsAsClasses}` | An HTML class-attribute friendly list of the post's tags. Example: `"humor office new_york_city"` | 
-| `{block:Post[1-15]}{/block:Post[1-15]}` | Rendered for the post at the specified offset. This makes it possible to insert an advertisement or design element in the middle of your posts.
+| `{block:Post[1-15]}{/block:Post[1-15]}` | Rendered for the post at the specified offset. This makes it possible to insert an advertisement or design element in the middle of your posts. | 
 
-## Reblogs | 
+## Reblogs
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:NotReblog}{/block:NotReblog}` | Rendered if a post was not reblogged from another post. | 
@@ -145,30 +151,30 @@ EJS documentation: https://ejs.co/
 | `{ReblogRootPortraitURL-64}` | Portrait photo URL for the blog this post was created by. 64-pixels by 64-pixels. | 
 | `{ReblogRootPortraitURL-96}` | Portrait photo URL for the blog this post was created by. 96-pixels by 96-pixels. | 
 | `{ReblogRootPortraitURL-128}` | Portrait photo URL for the blog this post was created by. 128-pixels by 128-pixels. | 
-| `{block:Reblogs}{/block:Reblogs}` | Rendering each reblog in the reblog trail for this post inside this block. | 
+| `{block:Reblogs}{/block:Reblogs}` | Rendering each reblog in the reblog trail for this post inside this block. | `<% post['reblog-data'].forEach(function(reblog, i) { %><% }); %>`
 | `{block:IsActive}{/block:IsActive}` | Rendered when the blog that made this reblog trail item is active. | 
 | `{block:IsDeactivated}{/block:IsDeactivated}` | Rendered when the blog that made this reblog trail item has been deactivated. | 
-| `{Username}` | The name of the blog that made this reblog trail item. | 
+| `{Username}` | The name of the blog that made this reblog trail item. | `<%=reblog['name']%>`
 | `{Permalink}` | Permalink to this post in the reblog trail. | 
 | `{PortraitURL-16}` | Portrait photo URL for the blog in this reblog trail item. 16-pixels by 16-pixels. | 
 | `{PortraitURL-24}` | Portrait photo URL for the blog in this reblog trail item. 24-pixels by 24-pixels. | 
 | `{PortraitURL-30}` | Portrait photo URL for the blog in this reblog trail item. 30-pixels by 30-pixels. | 
 | `{PortraitURL-40}` | Portrait photo URL for the blog in this reblog trail item. 40-pixels by 40-pixels. | 
 | `{PortraitURL-48}` | Portrait photo URL for the blog in this reblog trail item. 48-pixels by 48-pixels. | 
-| `{PortraitURL-64}` | Portrait photo URL for the blog in this reblog trail item. 64-pixels by 64-pixels. | 
+| `{PortraitURL-64}` | Portrait photo URL for the blog in this reblog trail item. 64-pixels by 64-pixels. | `/profiles/<%=reblog['id']-%>-64.png`
 | `{PortraitURL-96}` | Portrait photo URL for the blog in this reblog trail item. 96-pixels by 96-pixels. | 
 | `{PortraitURL-128}` | Portrait photo URL the blog in this reblog trail item. 128-pixels by 128-pixels. | 
-| `{block:isOriginalEntry}{/block:isOriginalEntry}` | Rendered when this reblog trail item is the original post content. | 
-| `{Body}` | The HTML content of the reblog trail item.
+| `{block:isOriginalEntry}{/block:isOriginalEntry}` | Rendered when this reblog trail item is the original post content. | `<% if(i == 0) { %><% } %>`
+| `{Body}` | The HTML content of the reblog trail item. | `<%-markdown(reblog['content'])%>`
 
-## Text Posts | 
+## Text Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
-| `{block:Title}{/block:Title}` | Rendered if there is a title for this post. | 
-| `{Title}` | The title of this post. | 
-| `{Body}` | The content of this post.
+| `{block:Title}{/block:Title}` | Rendered if there is a title for this post. | `<% if(post['title']) { %><% } %>`
+| `{Title}` | The title of this post. | `<%=entities.decode(post['title'])%></h3>`
+| `{Body}` | The content of this post. | `<%-markdown(post['body-text']) %>` 
 
-## Photo Posts | 
+## Photo Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{PhotoAlt}` | The HTML-safe version of the caption (if one exists) of this post. | 
@@ -199,42 +205,43 @@ EJS documentation: https://ejs.co/
 | `{block:Camera}{Camera}{/block:Camera}` | Rendered if this photo's Exif data contains camera info. | 
 | `{block:Aperture}{Aperture}{/block:Aperture}` | Rendered if this photo's Exif data contains aperture info. | 
 | `{block:Exposure}{Exposure}{/block:Exposure}` | Rendered if this photo's Exif data contains exposure info. | 
-| `{block:FocalLength}{FocalLength}{/block:FocalLength}` | Rendered if this photo's Exif data contains focal length.
+| `{block:FocalLength}{FocalLength}{/block:FocalLength}` | Rendered if this photo's Exif data contains focal length. | 
 
 ## Panorama Posts
-The template tags defined for `{block:Photo}` are also available to `{block:Panorama}, with the following additions: | 
+The template tags defined for `{block:Photo}` are also available to `{block:Panorama}`, with the following additions:
+
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{LinkOpenTag}` | An HTML open anchor-tag with Javascript to activate the Panorama lightbox. | 
 | `{LinkCloseTag}` | A closing anchor-tag. | 
 | `{PhotoURL-Panorama}` | URL for the panorama photo of this post. These images can be very big. (2560+ pixels wide) | 
 | `{PhotoWidth-Panorama}` | Width for the panorama size photo. | 
-| `{PhotoHeight-Panorama}` | Height for the panorama size photo.
+| `{PhotoHeight-Panorama}` | Height for the panorama size photo. | 
 
-## Photoset Posts | 
+## Photoset Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
-| `{block:Caption}{/block:Caption}` | Rendered if there is a caption for this post. | 
-| `{Caption}` | The caption for this post. | 
+| `{block:Caption}{/block:Caption}` | Rendered if there is a caption for this post. | `<% if(post['body-text']) { %><% } %>`
+| `{Caption}` | The caption for this post. | `<%-markdown(post['body-text']) %>` 
 | `{Photoset}` | Embed code for a responsive Photoset that shrinks to fit the container (max. 700-pixels wide). | 
 | `{Photoset-700}` | Embed code for a 700-pixel wide photoset. | 
 | `{Photoset-500}` | Embed code for a 500-pixel wide photoset. | 
 | `{Photoset-400}` | Embed code for a 400-pixel wide photoset. | 
 | `{Photoset-250}` | Embed code for a 250-pixel wide photoset. | 
-| `{PhotoCount}` | The number of photos in the Photoset. | 
+| `{PhotoCount}` | The number of photos in the Photoset. | `<%=post['photos'].length %>`
 | `{PhotosetLayout}` | An integer representation of the Photoset layout. | 
 | `{JSPhotosetLayout}` | JavaScript array of the Photoset column counts. | 
-| `{block:Photos}{/block:Photos}` | Rendered for each of the Photoset photos. Each contains the same variables as `{block:Photo}
+| `{block:Photos}{/block:Photos}` | Rendered for each of the Photoset photos. Each contains the same variables as `{block:Photo} | `<% post['photos'].forEach(function(photo, i) { %><% }); %>`
 
-## Quote Posts | 
+## Quote Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{Quote}` | The content of this post. | 
 | `{block:Source}{/block:Source}` | Rendered if there is a source for this post. | 
 | `{Source}` | The source for this post. May contain HTML. | 
-| `{Length}` | "short", "medium", or "long", depending on the length of the quote.
+| `{Length}` | "short", "medium", or "long", depending on the length of the quote. | 
 
-## Link Posts | 
+## Link Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{URL}` | The URL of this post. | 
@@ -250,9 +257,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{block:Author}{/block:Author}` | Rendered if the post includes an author. | 
 | `{Author}` | The linked author's name. | 
 | `{block:Excerpt}{/block:Excerpt}` | Rendered if the post includes an excerpt. | 
-| `{Excerpt}` | The excerpt for this post.
+| `{Excerpt}` | The excerpt for this post. | 
 
-## Chat Posts | 
+## Chat Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:Title}{/block:Title}` | Rendered if there is a title for this post. | 
@@ -263,9 +270,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{Name}` | The username (if one was extracted) for the current line of this post. | 
 | `{Line}` | The current line of this post. | 
 | `{UserNumber}` | A unique identifying integer representing the user of the current line of this post. | 
-| `{Alt}` | "odd" or "even" for each line of this post.
+| `{Alt}` | "odd" or "even" for each line of this post. | 
 
-## Audio Posts | 
+## Audio Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:Caption}{/block:Caption}` | Rendered if there is a caption for this post. | 
@@ -288,9 +295,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{block:AlbumArt}{AlbumArtURL}{/block:AlbumArt}` | Rendered if this audio file's ID3 info contains album art. | 
 | `{block:Artist}{Artist}{/block:Artist}` | Rendered if this audio file's ID3 info contains the artist name. | 
 | `{block:Album}{Album}{/block:Album}` | Rendered if this audio file's ID3 info contains the album title. | 
-| `{block:TrackName}{TrackName}{/block:TrackName}` | Rendered if this audio file's ID3 info contains the track name.
+| `{block:TrackName}{TrackName}{/block:TrackName}` | Rendered if this audio file's ID3 info contains the track name. | 
 
-## Video Posts | 
+## Video Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:Caption}{/block:Caption}` | Rendered if there is a caption for this post. | 
@@ -307,9 +314,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{FormattedPlayCount}` | The number of times this post has been played, formatted with commas. e.g., "12,309" | 
 | `{PlayCountWithLabel}` | The number of times this post has been played, formatted with commas and pluralized label e.g., "12,309 plays" | 
 | `{block:VideoThumbnail}{VideoThumbnailURL}{/block:VideoThumbnail}` | Rendered if there is a video thumbnail available. | 
-| `{block:VideoThumbnails}{VideoThumbnailURL}{/block:VideoThumbnails}` | Rendered for each video thumbnail when there are multiple.
+| `{block:VideoThumbnails}{VideoThumbnailURL}{/block:VideoThumbnails}` | Rendered for each video thumbnail when there are multiple. | 
 
-## Answer Posts | 
+## Answer Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{Question}` | The question for this post. May contain heavily filtered HTML | 
@@ -333,9 +340,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{AnswererPortraitURL-64}` | Portrait photo URL for the reblogged answerer. 64-pixels by 64-pixels. Only exists within `{block:Answerer}{/block:Answerer}` and if post has been reblogged. | 
 | `{AnswererPortraitURL-96}` | Portrait photo URL for the reblogged answerer. 96-pixels by 96-pixels. Only exists within `{block:Answerer}{/block:Answerer}` and if post has been reblogged. | 
 | `{AnswererPortraitURL-128}` | Portrait photo URL for the reblogged answerer. 128-pixels by 128-pixels. Only exists within `{block:Answerer}{/block:Answerer}` and if post has been reblogged. | 
-| `{Replies}` | Reblog chain. If not a reblog `{Replies}` is an alias for `{Answer}`
+| `{Replies}` | Reblog chain. If not a reblog `{Replies}` is an alias for `{Answer}` | 
 
-## Dates | 
+## Dates
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:Date}{/block:Date}` | Rendered for all posts. Always wrap dates in this block so they will be properly hidden on non-post pages. | 
@@ -365,9 +372,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{Seconds}` | "0" through "59" | 
 | `{Beats}` | "0" through "999" | 
 | `{Timestamp}` | "1172705619" | 
-| `{TimeAgo}` | A contextual time. e.g., "1 minute ago", "2 hours ago", "3 weeks ago", etc.
+| `{TimeAgo}` | A contextual time. e.g., "1 minute ago", "2 hours ago", "3 weeks ago", etc. | 
 
-## Notes | 
+## Notes
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:PostNotes}{/block:PostNotes}` | Rendered on permalink pages if this post has notes. | 
@@ -376,19 +383,19 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{PostNotes-64}` | Standard HTML output of this post's notes with 64x64 sized avatars. Only rendered on permalink pages. | 
 | `{block:NoteCount}{/block:NoteCount}` | Rendered if this post has notes. Always wrap note counts in this block so they will be properly hidden on non-post pages. | 
 | `{NoteCount}` | The number of this post's notes. | 
-| `{NoteCountWithLabel}` | The number of this post's notes with pluralized label. e.g., "24 notes"
+| `{NoteCountWithLabel}` | The number of this post's notes with pluralized label. e.g., "24 notes" | 
 
-## Tags | 
+## Tags
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
-| `{block:HasTags}{/block:HasTags}` | Rendered inside `{block:Posts}` if post has tags. | 
-| `{block:Tags}{/block:Tags}` | Rendered for each of a post's tags. | 
-| `{Tag}` | The name of this tag. | 
-| `{URLSafeTag}` | A URL safe version of this tag. | 
+| `{block:HasTags}{/block:HasTags}` | Rendered inside `{block:Posts}` if post has tags. | `<% if(post['tags'].length) { %><% } %>`
+| `{block:Tags}{/block:Tags}` | Rendered for each of a post's tags. | `<% post['tags'].forEach(function(tag) { %><% }); %>`
+| `{Tag}` | The name of this tag. | `<%=tag[0]%>`
+| `{URLSafeTag}` | A URL safe version of this tag. | `<%=tag[1]%>`
 | `{TagURL}` | The tag page URL with other posts that share this tag. | 
-| `{TagURLChrono}` | The tag page URL with other posts that share this tag in chronological order.
+| `{TagURLChrono}` | The tag page URL with other posts that share this tag in chronological order. | 
 
-## Content Sources | 
+## Content Sources
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:ContentSource}{/block:ContentSource}` | Rendered if a source is specified for a post's content. | 
@@ -398,9 +405,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{LogoWidth}` | Width of the source's logo. | 
 | `{LogoHeight}` | Height of the source's logo. | 
 | `{SourceTitle}` | Title of the content source. | 
-| `{block:NoSourceLogo}{/block:NoSourceLogo}` | Rendered if no source logo exists.
+| `{block:NoSourceLogo}{/block:NoSourceLogo}` | Rendered if no source logo exists. | 
 
-## Submissions | 
+## Submissions
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:Submission}{/block:Submission}` | Rendered if a post is a submission. | 
@@ -413,10 +420,10 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{SubmitterPortraitURL-48}` | Portrait photo URL for the submitter. 48-pixels by 48-pixels. | 
 | `{SubmitterPortraitURL-64}` | Portrait photo URL for the submitter. 64-pixels by 64-pixels. | 
 | `{SubmitterPortraitURL-96}` | Portrait photo URL for the submitter. 96-pixels by 96-pixels. | 
-| `{SubmitterPortraitURL-128}` | Portrait photo URL for the submitter. 128-pixels by 128-pixels.
+| `{SubmitterPortraitURL-128}` | Portrait photo URL for the submitter. 128-pixels by 128-pixels. | 
 
-# Group Blogs
-## Group Members | 
+## Group Blogs
+### Group Members
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:GroupMembers}{/block:GroupMembers}` | Rendered on additional public group blogs. | 
@@ -431,9 +438,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{GroupMemberPortraitURL-48}` | Portrait photo URL for the member. 48-pixels by 48-pixels. | 
 | `{GroupMemberPortraitURL-64}` | Portrait photo URL for the member. 64-pixels by 64-pixels. | 
 | `{GroupMemberPortraitURL-96}` | Portrait photo URL for the member. 96-pixels by 96-pixels. | 
-| `{GroupMemberPortraitURL-128}` | Portrait photo URL for the member. 128-pixels by 128-pixels.
+| `{GroupMemberPortraitURL-128}` | Portrait photo URL for the member. 128-pixels by 128-pixels. | 
 
-## Post Authors | 
+### Post Authors
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{PostAuthorName}` | The username of the author of a post to an additional group blog. | 
@@ -446,9 +453,9 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{PostAuthorPortraitURL-48}` | The portrait photo URL for the author of a post to an additional group blog. 48-pixels by 48-pixels. | 
 | `{PostAuthorPortraitURL-64}` | The portrait photo URL for the author of a post to an additional group blog. 64-pixels by 64-pixels. | 
 | `{PostAuthorPortraitURL-96}` | The portrait photo URL for the author of a post to an additional group blog. 96-pixels by 96-pixels. | 
-| `{PostAuthorPortraitURL-128}` | The portrait photo URL for the author of a post to an additional group blog. 128-pixels by 128-pixels.
+| `{PostAuthorPortraitURL-128}` | The portrait photo URL for the author of a post to an additional group blog. 128-pixels by 128-pixels. | 
 
-## Day Pages | 
+## Day Pages
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:DayPage}{/block:DayPage}` | Rendered on day pages. | 
@@ -456,27 +463,27 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{block:PreviousDayPage}{/block:PreviousDayPage}` | Rendered if there is a "previous" day page to navigate to. | 
 | `{block:NextDayPage}{/block:NextDayPage}` | Rendered if there is a "next" day page to navigate to. | 
 | `{PreviousDayPage}` | URL for the "previous" day page. | 
-| `{NextDayPage}` | URL for the "next" day page.
+| `{NextDayPage}` | URL for the "next" day page. | 
 
-## Tag Pages | 
+## Tag Pages
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:TagPage}{/block:TagPage}` | Rendered on tag pages. | 
 | `{Tag}` | The name of this tag. | 
 | `{URLSafeTag}` | A URL safe version of this tag. | 
 | `{TagURL}` | The tag page URL with other posts that share this tag. | 
-| `{TagURLChrono}` | The tag page URL with other posts that share this tag in chronological order.
+| `{TagURLChrono}` | The tag page URL with other posts that share this tag in chronological order. | 
 
-## Search | 
+## Search
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{SearchQuery}` | The current search query. | 
 | `{URLSafeSearchQuery}` | A URL-safe version of the current search query for use in links and Javascript. | 
 | `{block:SearchPage}` | Rendered on search pages. | 
 | `{SearchResultCount}` | The number of results returned for the current search query. | 
-| `{block:NoSearchResults}` | Rendered if no search results were returned for the current search query.
+| `{block:NoSearchResults}` | Rendered if no search results were returned for the current search query. | 
 
-## Following | 
+## Following
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:Following}{/block:Following}` | Rendered if you're following other blogs. | 
@@ -491,33 +498,33 @@ The template tags defined for `{block:Photo}` are also available to `{block:Pano
 | `{FollowedPortraitURL-48}` | Portrait photo URL for the blog you're following. 48-pixels by 48-pixels. | 
 | `{FollowedPortraitURL-64}` | Portrait photo URL for the blog you're following. 64-pixels by 64-pixels. | 
 | `{FollowedPortraitURL-96}` | Portrait photo URL for the blog you're following. 96-pixels by 96-pixels. | 
-| `{FollowedPortraitURL-128}` | Portrait photo URL for the blog you're following. 128-pixels by 128-pixels.
+| `{FollowedPortraitURL-128}` | Portrait photo URL for the blog you're following. 128-pixels by 128-pixels. | 
 
-## Likes | 
+## Likes
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{block:Likes}{/block:Likes}` | Rendered if you are sharing your likes. | 
 | `{Likes}` | Standard HTML output of your likes. | 
 | `{Likes limit="5"}` | Standard HTML output of your last 5 likes. Maximum: 10 | 
 | `{Likes width="200"}` | Standard HTML output of your likes with Audio and Video players scaled to 200-pixels wide. Scale images with CSS max-width or similar. | 
-| `{Likes summarize="100"}` | Standard HTML output of your likes with text summarized to 100-characters. Maximum: 250
+| `{Likes summarize="100"}` | Standard HTML output of your likes with text summarized to 100-characters. Maximum: 250 | 
 
-# Like and Reblog buttons
-## Like Button | 
+## Like and Reblog buttons
+### Like Button
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{LikeButton}` | Default Like button. | 
 | `{LikeButton color="grey"}` | Like button color. Grey, White, or Black. Like button will always be red if visitor has liked the post. | 
-| `{LikeButton size="20"}` | Like button size. Maximum: 100
+| `{LikeButton size="20"}` | Like button size. Maximum: 100 | 
 
-## Reblog Button | 
+### Reblog Button
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
 | `{ReblogButton}` | Default Reblog button. | 
 | `{ReblogButton color="grey"}` | Reblog button color. Grey, White, or Black. | 
-| `{ReblogButton size="20"}` | Reblog button size. Maximum: 100
+| `{ReblogButton size="20"}` | Reblog button size. Maximum: 100 | 
 
-## Related Posts | 
+## Related Posts
 | Variable | Description | EJS counterpart
 |----------|-------------|---------------- 
-| `{block:RelatedPosts}{/block:RelatedPosts}` | Rendered on permalink pages. Shows related posts using post type, content, and tags as reference. Follows the same format as the Posts block.
+| `{block:RelatedPosts}{/block:RelatedPosts}` | Rendered on permalink pages. Shows related posts using post type, content, and tags as reference. Follows the same format as the Posts block. | 
