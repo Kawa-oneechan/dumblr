@@ -1,24 +1,22 @@
+<%# TODO: all over lol %>
 <% posts.forEach(function(post) { %>
 	<div class="border border-dark rounded shadow bg-white text-dark mb-4 p-2 post <%_post['post-type'] %> ava-side-tail">
-		<a href="/<%=post['handle']_%>"><img src="/profiles/<%=post['user-id']-%>-64.png" class="avatar ava-side"></a>
+		<a href="/user/<%=post['handle']_%>"><img src="/profiles/<%=post['user-id']-%>-64.png" class="avatar ava-side"></a>
 
 		<% if(post['reblog-data']) { post['reblog-data'] = JSON.parse(post['reblog-data']) } else { post['reblog-data'] = {} } %>
 		<% if(post['tags']) { post['tags'] = JSON.parse(post['tags']) } else { post['tags'] = {} } %>
+		<% if(post['photos']) { post['photos'] = JSON.parse(post['photos']) } else { post['photos'] = {} } %>
 
 		<% if(post['post-type'] === 'text') { %>
 			<% if(post['title']) { %><h3><%=entities.decode(post['title'])%></h3><% } %>
 
 			<% if(post['reblog-count']) post['reblog-data'].forEach(function(reblog, i) { %>
-				<a href="/<%=reblog['name']_%>" class="padded<% if(i > 0) { %> reblog<% } %>"><img src="/profiles/<%=reblog['id']-%>-32.png" class="avatar ava-32"> <%=reblog['name']%></a>
+				<a href="/user/<%=reblog['name']_%>" class="padded<% if(i > 0) { %> reblog<% } %>"><img src="/profiles/<%=reblog['id']-%>-32.png" class="avatar ava-32"> <%=reblog['name']%></a>
 				<%-markdown(reblog['content'])%>
 				<hr>
 			<% }); %>
 
 			<% if(post['body-text']) { %><%-markdown(post['body-text']) %><% } %>
-
-			<% if(post['tags'].length) { %><p class="text-muted mb-0"> <% post['tags'].forEach(function(tag) { %>
-				<a class="text-muted" href="/tags/<%=tag[1]_%>">#<%=tag[0]%></a>
-			<% }); %> </p> <% } %>
 
 		<% } else if(post['post-type'] === 'photo') { %>
 
@@ -26,13 +24,12 @@
 			<% if(post['reblog-count']) { %>
 				<%# TODO: REBLOGGED PHOTOSET %>
 			<% } else { %>
-				<a href="/<%=post['handle']_%>"><%=post['handle']_%></a>
+				<a href="/user/<%=post['handle']_%>"><%=post['handle']_%></a>
 			<% } %>
 			</small>
 
 			<% if(post['title']) { %><h3 class="padded"><%=entities.decode(post['title'])%></h3><% } %>
 
-			<% post['photos'] = JSON.parse(post['photos']) %>
 			<% if(post['photos'].length === 1) { %>
 				<img src="/uploads/<%=post['photos'][0]['url'] %>" alt="<%=post['photos'][0]['caption'] %>" class="photo photo-single">
 			<% } else { %>
@@ -45,9 +42,10 @@
 
 			<% if(post['body-text']) { %><%- markdown(post['body-text']) %><% } %>
 
-			<%# TODO: TAGS %>
-
 		<% } %>
 
+	<% if(post['tags'].length) { %><p class="text-muted mb-0"> <% post['tags'].forEach(function(tag) { %>
+		<a class="text-muted" href="/tags/<%=tag[1]_%>">#<%=tag[0]%></a>
+	<% }); %> </p> <% } %>
 	</div>
 <% }); %>
