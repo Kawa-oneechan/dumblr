@@ -1,4 +1,3 @@
-<%# TODO: all over lol %>
 <% posts.forEach(function(post) { %>
 	<div class="border border-dark rounded shadow bg-white text-dark mb-4 p-2 post <%_post['post-type'] %> ava-side-tail">
 		<a href="/user/<%=post['handle']_%>"><img src="/profiles/<%=post['user-id']-%>-64.png" class="avatar ava-side"></a>
@@ -28,17 +27,25 @@
 			<% } %>
 			</small>
 
-			<% if(post['title']) { %><h3 class="padded"><%=entities.decode(post['title'])%></h3><% } %>
+			<img src="<%=post['photos'][0]['url'] %>" alt="<%=post['photos'][0]['caption'] %>" class="photo photo-single">
 
-			<% if(post['photos'].length === 1) { %>
-				<img src="/uploads/<%=post['photos'][0]['url'] %>" alt="<%=post['photos'][0]['caption'] %>" class="photo photo-single">
+			<% if(post['body-text']) { %><%- markdown(post['body-text']) %><% } %>
+
+		<% } else if(post['post-type'] === 'photoset') { %>
+
+			<small class="padded">
+			<% if(post['reblog-count']) { %>
+				<%# TODO: REBLOGGED PHOTOSET %>
 			<% } else { %>
-				<div class="photoset padded">
-					<% post['photos'].forEach(function(photo, i) { %>
-						<img src="/uploads/<%=photo['url'] %>" alt="<%=photo['caption'] %>" class="photo photo-set">
-					<% }); %>
-				</div>
+				<a href="/user/<%=post['handle']_%>"><%=post['handle']_%></a>
 			<% } %>
+			</small>
+
+			<div class="photoset padded">
+				<% post['photos'].forEach(function(photo, i) { %>
+					<img src="<%=photo['url'] %>" alt="<%=photo['caption'] %>" class="photo photo-set">
+				<% }); %>
+			</div>
 
 			<% if(post['body-text']) { %><%- markdown(post['body-text']) %><% } %>
 

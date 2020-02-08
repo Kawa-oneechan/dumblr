@@ -83,46 +83,48 @@ function convertTheme(theme)
 	return theme;
 }
 
-router.get('/user/:user/post/:post', mylogin({allowGuest:true}), function(req, res, next) {
-	req.params['post'] = parseInt(req.params['post']);
-	db.query("SELECT * FROM themes RIGHT JOIN users ON themes.id=users.id WHERE users.handle=?", [req.params['user']], function (error, results, fields) {
-		if (error) throw error;
-		theme = results[0];
-		if (!theme['main-template']) theme['main-template'] = defaultTemplate;
-		console.log(theme);
-		var mainTemplate = convertTheme(theme['main-template']);
-
-		db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE users.handle=? AND posts.id=?", [req.params['user'], req.params['post']], function (error, results, fields) {
+getTheme = function(options) {
+	return function(req, res, next) {
+		db.query("SELECT * FROM themes RIGHT JOIN users ON themes.id=users.id WHERE users.handle=?", [req.params['user']], function (error, results, fields) {
 			if (error) throw error;
-			if (results.length) {
-				let t = ejs.render(mainTemplate, { posts: results, theme: theme, user: req.user, message: '' });
-				res.send(t);
-			}
-			else
-				res.render('posts-error', { user: req.user, message: 'No such post.' });
+			req.theme = results[0];
+			if (!req.theme['main-template']) req.theme['main-template'] = defaultTemplate;
+			//console.log(req.theme);
+			req.mainTemplate = convertTheme(req.theme['main-template']);
+			next();
 		})
-	});
+	}
+}
+
+function createErrorPosts(message) {
+	return [{
+		'id': 0,
+		'post-type': 'text',
+		'body-text': message,
+	}];
+	//perhaps have the theme converter recognize the fake ID and not render anything to interact with the post...
+}
+
+router.get('/user/:user/post/:post', mylogin({allowGuest:true}), getTheme(), function(req, res, next) {
+	req.params['post'] = parseInt(req.params['post']);
+	db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE users.handle=? AND posts.id=?", [req.params['user'], req.params['post']], function (error, results, fields) {
+		if (error) throw error;
+		if (!results.length)
+			results = createErrorPosts('No such post.');
+		let t = ejs.render(req.mainTemplate, { posts: results, theme: req.theme, user: req.user, message: '' });
+		res.send(t);
+	})
 });
 
 
-router.get('/user/:user', mylogin({allowGuest:true}), function(req, res, next) {
-	db.query("SELECT * FROM themes RIGHT JOIN users ON themes.id=users.id WHERE users.handle=?", [req.params['user']], function (error, results, fields) {
+router.get('/user/:user', mylogin({allowGuest:true}), getTheme(), function(req, res, next) {
+	db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE users.handle=? ORDER BY `posted-on` DESC", [req.params['user']], function (error, results, fields) {
 		if (error) throw error;
-		theme = results[0];
-		if (!theme['main-template']) theme['main-template'] = defaultTemplate;
-		console.log(theme);
-		var mainTemplate = convertTheme(theme['main-template']);
-
-		db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE users.handle=? ORDER BY `posted-on` DESC", [req.params['user']], function (error, results, fields) {
-			if (error) throw error;
-			if (results.length) {
-				let t = ejs.render(mainTemplate, { posts: results, theme: theme, user: req.user, message: '' });
-				res.send(t);
-			}
-			else
-				res.render('posts-error', { message: 'Nothing here~' });
-		})
-	});
+		if (!results.length)
+			results = createErrorPosts('Nothing here yet.');
+		let t = ejs.render(req.mainTemplate, { posts: results, theme: req.theme, user: req.user, message: '' });
+		res.send(t);
+	})
 });
 
 module.exports = router;
