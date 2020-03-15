@@ -27,7 +27,7 @@
 			<% } %>
 			</small>
 
-			<img src="<%=post['photos'][0]['url'] %>" alt="<%=post['photos'][0]['caption'] %>" class="photo photo-single">
+			<img src="<%=post['photos']['photos'][0]['url'] %>" alt="<%=post['photos']['photos'][0]['caption'] %>" class="photo photo-single">
 
 			<% if(post['body-text']) { %><%- markdown(post['body-text']) %><% } %>
 
@@ -41,9 +41,11 @@
 			<% } %>
 			</small>
 
-			<div class="photoset padded">
-				<% post['photos'].forEach(function(photo, i) { %>
-					<img src="<%=photo['url'] %>" alt="<%=photo['caption'] %>" class="photo photo-set">
+			<div class="photoset-grid" photoset-layout="<%=post['photos']['layout']_%>">
+				<% post['photos']['photos'].forEach(function(photo, i) { %>
+					<div>
+						<img src="<%=photo['url'] %>" alt="<%=photo['caption'] %>">
+					</div>
 				<% }); %>
 			</div>
 
