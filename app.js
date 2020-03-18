@@ -89,6 +89,20 @@ global.grabRandomBackground = function() {
 	return files[Math.floor(Math.random() * files.length)];
 }
 
+global.getPhotosetLayout = function(count) {
+	var ret = '';
+	const layouts = [ '1', '11', '12', '22' ];
+	while (count > 0)
+	{
+		var segment = 0;
+		for (var i = 0; i < 3; i++)
+			if (count > i) segment = i;
+		ret = layouts[segment] + ret;
+		count -= 4;
+	}
+	return ret;
+}
+
 Date.prototype.toUnixTime = function() { return this.getTime() / 1000 | 0 };
 Date.time = function() { return new Date().toUnixTime(); }
 
