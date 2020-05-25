@@ -57,11 +57,11 @@ function convertTheme(theme)
 
 		'<%=theme[\'title\']%>': /{BlogTitle}/g,
 		'<% posts.forEach(function(post) { %>': /{block:Posts}/g,
-		'<% post[\'photos\'].forEach(function(photo, i) { %>': /{block:Photos}/g,
+		'<% post[\'photos\'][\'photos\'].forEach(function(photo, i) { %>': /{block:Photos}/g,
 		'<% }); %>': /{\/block:(Posts|Photos)}/g,
 
 		'<% if(post[\'post-type\'] === \'text\') { %>': /{block:Text}/g,
-		'<% if(post[\'post-type\'] === \'photo\') { post[\'photos\'] = JSON.parse(post[\'photos\']); var photo = post[\'photos\'][0]; %>': /{block:Photo}/g,
+		'<% if(post[\'post-type\'] === \'photo\') { post[\'photos\'] = JSON.parse(post[\'photos\']); var photo = post[\'photos\'][\'photos\'][0]; %>': /{block:Photo}/g,
 		'<% if(post[\'post-type\'] === \'photoset\') { post[\'photos\'] = JSON.parse(post[\'photos\']); %>': /{block:Photoset}/g,
 		'<% if(post[\'title\']) { %>': /{block:Title}/g,
 		'<% } %>': /{\/block:(Text|Title|Photo|Photoset)}/g,
