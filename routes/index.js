@@ -16,8 +16,9 @@ router.get('/', mylogin({allowGuest:false}), function(req, res, next) {
 	})
 });
 
-router.post('/', upload.any(), function(req, res, next) {
-	console.log("POST /");
+router.post('/', mylogin({allowGuest:true}), upload.any(), function(req, res, next) {
+	if (req.user.id == 0)
+		res.sendStatus(403);
 	if (req.body['post-type'] == 'text')
 	{
 		const stringTags = req.body['tags'].length > 2 ? JSON.stringify(req.body['tags'].split(', ').map(t => [t, sluggify(t)])) : '';

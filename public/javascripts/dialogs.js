@@ -47,6 +47,9 @@ function submitX(f, okay) {
 		}
 		else if (xhr.status !== 200) {
 			alert('Request failed.  Returned status of ' + xhr.status);
+			if (xhr.status == 403) {
+				location.reload(true); //force login page to appear
+			}
 		}
 	};
 
