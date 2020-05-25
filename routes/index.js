@@ -60,19 +60,20 @@ router.get('/tags/:tag', function(req, res, next) {
 	})
 });
 
-router.get('/dashboard/profile', function (req, res, next) {
-	db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE posts.`user-id`=? ORDER BY `posted-on` DESC", [req.user.id], function (error, results, fields) {
+router.get('/dashboard/profile', mylogin({allowGuest:false}), function (req, res, next) {
+	db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE posts.`user-id`=? ORDER BY `posted-on` DESC",
+	[req.user.id], function (error, results, fields) {
 		if (error) throw error;
 		if (results.length) {
-			res.render('posts', { posts: results, newPost: true, message: '' });
+			res.render('posts', { posts: results, newPost: true, message: '', user: req.user });
 		}
 		else {
-			res.render('posts-error', { message: 'No posts?' });
+			res.render('posts-error', { message: 'No posts?', user: req.user });
 		}
 	})
 });
 
-router.get('/dashboard/:user', function (req, res, next) {
+router.get('/dashboard/:user', mylogin({allowGuest:false}), function (req, res, next) {
 	if (req.cookies['dumblr_id'] && req.cookies['dumblr_password']) {
 		db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
 			if (results.length) {
