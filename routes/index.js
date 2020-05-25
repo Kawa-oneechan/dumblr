@@ -48,7 +48,7 @@ router.post('/', upload.any(), function(req, res, next) {
 	}
 });
 
-router.get('/tags/:tag', function(req, res, next) {
+router.get('/tags/:tag', mylogin({allowGuest:true}), function(req, res, next) {
 	db.query("SELECT posts.*, users.handle, users.title AS `user-title` FROM posts LEFT JOIN users ON users.id=posts.`user-id` WHERE tags LIKE ? ORDER BY `posted-on` DESC", ['%"'+req.params['tag']+'"%'], function (error, results, fields) {
 		if (error) throw error;
 		if (results.length) {
