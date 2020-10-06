@@ -145,6 +145,7 @@ app.get('/testjimp/:id', function (req, res) {
 			image.quality(90);
 			image.writeAsync(s + i + '-' + size + '.png');
 		})
+		res.send({ message: 'OK!', ok: true });
 	})
 })
 
