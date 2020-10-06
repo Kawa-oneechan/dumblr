@@ -28,14 +28,12 @@ function openNewPost(postType) {
 }
 
 function openModal(id) {
-	document.getElementById('shadow').style['display'] = 'block';
-	document.getElementById(id).style['display'] = 'block';
+	document.getElementById(id).classList.remove('d-none')
 	window.scroll({'left':0,'top':0,'behavior':'smooth'});
 }
 
 function closeModal(id) {
-	document.getElementById('shadow').style['display'] = 'none';
-	document.getElementById(id).style['display'] = 'none';
+	document.getElementById(id).classList.add('d-none');
 }
 
 function submitX(f, okay) {
