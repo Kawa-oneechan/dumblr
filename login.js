@@ -16,10 +16,10 @@ module.exports = function(options) {
 			db.query("SELECT * FROM `users` WHERE (id=? AND `password-hash`=?) OR (`parent-id`=?) ORDER BY id", [req.cookies['dumblr_id'], req.cookies['dumblr_password'], req.cookies['dumblr_id']], function (error, results, fields) {
 				if (results.length) {
 					req.user = results.shift();
-					if (req.user.dashColor)
-						req.user.dashColor = '#' + req.user.dashColor;
+					if (req.user['dash-color'])
+						req.user['dash-color'] = '#' + req.user['dash-color'];
 					req.user.otherBlogs = results;
-					//console.log(req.user);
+					console.log(req.user);
 
 					next();
 					return;

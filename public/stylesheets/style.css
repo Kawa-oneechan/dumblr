@@ -179,7 +179,7 @@ div.ava-side-tail::before {
 }
 
 @media (prefers-color-scheme: dark) {
-	body { background: #000000; color: #EAEAEA !important; }
+	body { background: #000000; color: #EAEAEA; }
 	.bg-white { background: #242424 !important; }
 	.bg-secondary, .btn-secondary { background: #292A2D !important; }
 	.btn-secondary { border-color: #292A2D !important; }
