@@ -177,3 +177,16 @@ div.ava-side-tail::before {
 	[photoset-layout="121"] div:nth-child(3) { grid-column: span 3; }
 	[photoset-layout="121"] div:nth-child(4) { grid-column: span 6; }
 }
+
+@media (prefers-color-scheme: dark) {
+	body { background: #000000; color: #EAEAEA !important; }
+	.bg-white { background: #242424 !important; }
+	.bg-secondary, .btn-secondary { background: #292A2D !important; }
+	.btn-secondary { border-color: #292A2D !important; }
+	.btn-secondary:hover { background: #6c757d !important; }
+	.text-dark { color: #EAEAEA !important; }
+	.modal-content { background: #292A2D !important; }
+	button.close { color: #EAEAEA !important; }
+	.form-control { background: #393a3e !important; color: #ffffff !important; }
+	.ava-side-tail::before { border-right-color: #242424 !important; }
+}
