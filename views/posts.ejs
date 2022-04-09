@@ -1,0 +1,40 @@
+<%- include('partials/top') %>
+
+<% if (newPost) { %><%- include('partials/post-new-toolbar') %><% } %>
+
+<div id="posts">
+
+<% if (message) { %>
+<div class="border border-dark rounded shadow bg-primary text-light my-4 p-1 post"><%=message%></div>
+<% } %>
+
+<div class="border border-dark rounded shadow bg-white text-dark mb-4 p-2 d-none post ava-side-tail" role="dialog" id="new-text-post" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+	<form action="/" method="post">
+	<a href="/user/<%=user['handle']_%>"><img src="/profiles/<%=user['id']-%>-64.png" class="avatar ava-side"></a>
+		<div class="form-group">
+			<input type="text" name="title" class="form-control" placeholder="Title">
+		</div>
+		<div class="form-group">
+			<textarea name="body-text" class="form-control form-control-markdown" rows="16"></textarea>
+		</div>
+		<div class="form-group">
+			<input type="text" name="tags" class="form-control form-control-sm form-control-tags col-sm-10">
+		</div>
+		<input type="hidden" name="post-type" value="text">
+		<input onclick="submitAndPush(this.parentNode); closeModal('new-text-post'); return false;" type="submit" value="Submit" class="btn btn-primary">
+		<button type="button" class="btn btn-secondary" onclick="closeModal('new-text-post')">Cancel</button>
+	</form>
+</div>
+
+<%- include('partials/post-loop') %>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<script src="/javascripts/dialogs.js"></script>
+
+<%- include('partials/bottom') %>

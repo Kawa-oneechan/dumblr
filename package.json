@@ -1,0 +1,35 @@
+{
+  "name": "dumblr",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
+    "ace-builds": "^1.4.8",
+    "base64-img": "^1.0.4",
+    "bootstrap": "^4.4.1",
+    "bootstrap-markdown-editor-4": "^3.0.0",
+    "bootstrap-tokenfield": "^0.12.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.0.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.0",
+    "helmet": "^3.21.2",
+    "html-entities": "^1.2.1",
+    "http-errors": "~1.6.3",
+    "jimp": "^0.9.3",
+    "jquery": "^3.4.1",
+    "marked": "^4.0.10",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.2",
+    "mysql": "^2.17.1",
+    "popper.js": "^1.16.1",
+    "spectrum-colorpicker2": "^2.0.0",
+    "twemoji": "^12.1.5",
+    "uuid": "^8.3.2"
+  }
+}

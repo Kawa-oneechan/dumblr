@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>{BlogTitle}</title>
+	</head>
+	<body>
+		(no theme found y'all.)
+		{block:Posts}
+			{block:Text}
+				{block:Title}<h1>{Title}</h1>{/block:Title}
+				{Body}
+			{/block:Text}
+			{block:Photo}
+				<img src="{PhotoURL}">
+			{/block:Photo}
+			{block:Photoset}
+				{block:Photos}
+					<img src="{PhotoURL}">
+				{/block:Photos}
+			{/block:Photoset}
+		{/block:Posts}
+	</body>
+</html>
