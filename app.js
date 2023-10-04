@@ -23,11 +23,13 @@ app.use(helmet());
 
 const db = mysql.createConnection({
 	'host': process.env.host,
+	'port': 3306,
 	'user': process.env.user,
 	'password': process.env.password,
-	'database': process.env.database
+	'database': process.env.database,
 });
 db.connect();
+
 global.db = db;
 global.entities = new Entities();
 
