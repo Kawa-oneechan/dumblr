@@ -43,7 +43,7 @@ app.use('/stylesheets', express.static(path.join(__dirname, 'node_modules/bootst
 app.use('/stylesheets', express.static(path.join(__dirname, 'node_modules/bootstrap-markdown-editor-4/dist/css')));
 app.use('/stylesheets/fontawesome', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/css')));
 app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
-app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/popper.js/dist/umd')));
+//app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/@popper.js/core')));
 app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/bootstrap-tokenfield/dist')));
 app.use('/javascripts', express.static(path.join(__dirname, 'node_modules/bootstrap-markdown-editor-4/dist/js')));
